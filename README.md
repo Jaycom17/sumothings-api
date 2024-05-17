@@ -37,11 +37,23 @@ En el archivo *.env* se tienen variables de entorno, las cuales sireven para ser
 
 Para hacer la instalación de los requerimientos se hace uso del comando:
 ```bash
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 Y para generarlo:
 ```bash
 pip freeze > requirements.txt
 ```
 
-Trabajar en un entorno virtual (virtualenv)
+Trabajar en un entorno virtual (virtualenv):  
+
+para crearlo:
+```bash
+virtualenv venv
+```
+para inicializarlo:
+````bash
+cd .\venv\Scripts\
+```
+```bash
+.\activate
+```
