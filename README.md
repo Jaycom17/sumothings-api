@@ -51,7 +51,7 @@ para crearlo:
 virtualenv venv
 ```
 para inicializarlo:
-````bash
+```bash
 cd .\venv\Scripts\
 ```
 ```bash
