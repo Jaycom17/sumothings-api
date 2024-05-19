@@ -1,18 +1,10 @@
+from flask_sqlalchemy import SQLAlchemy
 from decouple import config
 
-import pymysql
-import traceback
+db = SQLAlchemy()
 
-
-def get_connection():
-    try:
-        return pymysql.connect(
-            host=config('MYSQL_HOST'),
-            user=config('MYSQL_USER'),
-            password=config('MYSQL_PASSWORD'),
-            db=config('MYSQL_DB')
-        )
-    except Exception as ex:
-        print(ex)
-        print(traceback.format_exc())
-        return None
+def configure_database(app):
+    app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    db.init_app(app)
