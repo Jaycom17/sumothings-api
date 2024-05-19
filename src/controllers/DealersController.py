@@ -1,28 +1,59 @@
 from flask import request, jsonify
 from services.DealersServices import getDealerById, getAllDealers, createDealer, updateDealer, deleteDealer
-from middlewares.DealerMiddelware import dealerMiddleWare
+from middlewares.DealerMiddleware import dealerMiddleWare
 
 def getDealers():
 
     dealers = getAllDealers()
-
-    return getAllDealers(), 200
+    
+    if dealers == None:
+        return jsonify({"error": "An error occurred while getting all dealers"}), 500
+    
+    return dealers, 200
 
 def getDealer(dealerId):
-    return getDealerById(dealerId), 200
+    
+    dealer = getDealerById(dealerId)
+    
+    if dealer == None:
+        return jsonify({"error": "An error occurred while getting all dealers"}), 500
+    
+    return dealer, 200
 
 def postDealer():
 
-    dealer = dealerMiddleWare(request.get_json())
+    dealerToCreate = dealerMiddleWare(request.get_json())
 
-    if dealer == None:
+    if dealerToCreate == None:
         return jsonify({"error": "Invalid body"}), 400
 
-    return createDealer(dealer), 200
+    dealer = createDealer(dealerToCreate)
+    
+    if dealer == None:
+        return jsonify({"error": "An error occurred while creating a dealer"}), 500
+    
+    return jsonify(dealer), 200
 
 def putDealer(dealerId):
-    return updateDealer(dealerId, ""), 200
+    
+    dealerToUpdate = dealerMiddleWare(request.get_json())
+    
+    if dealerToUpdate == None:
+        return jsonify({"error": "Invalid body"}), 400
+    
+    dealer = updateDealer(dealerId, dealerToUpdate)
+    
+    if dealer == None:
+        return jsonify({"error": "An error occurred while updating a dealer"}), 500
+    
+    return jsonify(dealer), 200
 
 def dropDealer(dealerId):
-    return deleteDealer(dealerId), 200
+        
+        dealer = deleteDealer(dealerId)
+        
+        if dealer == None:
+            return jsonify({"error": "An error occurred while deleting a dealer"}), 500
+        
+        return jsonify(dealer), 200
 
