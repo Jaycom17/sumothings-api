@@ -19,11 +19,12 @@ def getProductById(productID):
 
 def createProduct(data):
     try:
-        product = Product(data.proID, data.proName, data.proStock, data.proHeight, data.proWidth, data.proLength, data.proWeight, data.proBuyPrice, data.proSellPrice, data.proMinStock, data.proMaxStock, data.proDescription, data.proImage, data.proTypeID)
+        product = Product(data.proName, data.proStock, data.proHeight, data.proWidth, data.proLength, data.proWeight, data.proBuyPrice, data.proSellPrice, data.proMinStock, data.proMaxStock, data.proDescription, data.proImage, data.proTypeID)
         db.session.add(product)
         db.session.commit()
         return {"message": "Product created"}
     except Exception as e:
+        print(str(e))
         return None
     
 def updateProduct(productID,data):

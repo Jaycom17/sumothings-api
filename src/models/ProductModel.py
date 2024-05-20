@@ -1,4 +1,5 @@
 from database.database import db
+from models.ProductTypeModel import ProductType
 import uuid
 
 class ProductModel:
@@ -18,6 +19,7 @@ class ProductModel:
         self.proTypeID = proTypeID
 
 class Product(db.Model):
+    __tablename__ = 'product'
     proID = db.Column(db.String(255), primary_key=True)
     proName = db.Column(db.String(128), nullable=False, unique=True)
     proStock = db.Column(db.Integer, nullable=False)
@@ -32,6 +34,7 @@ class Product(db.Model):
     proDescription = db.Column(db.Text, nullable=False)
     proImage = db.Column(db.String(255), nullable=False)
     proTypeID = db.Column(db.String(255), db.ForeignKey('producttype.ptID'), nullable=False)
+
     
     def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float,proBuyPrice: float, proWeight: float, proSellPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, proTypeID: str):
         self.proID = uuid.uuid4().hex
