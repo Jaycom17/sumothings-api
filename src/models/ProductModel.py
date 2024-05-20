@@ -2,20 +2,20 @@ from database.database import db
 import uuid
 
 class ProductModel:
-    def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float, proWeight: float, proCostPrice: float, proSellingPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, typeID: str):
+    def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float, proWeight: float,proBuyPrice: float,  proSellPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, proTypeID: str):
         self.proName = proName
         self.proStock = proStock
         self.proHeight = proHeight
         self.proLength = proLength
+        self.proBuyPrice = proBuyPrice
         self.proWidth = proWidth
         self.proWeight = proWeight
-        self.proCostPrice = proCostPrice
-        self.proSellingPrice = proSellingPrice
+        self.proSellPrice = proSellPrice
         self.proMinStock = proMinStock
         self.proMaxStock = proMaxStock
         self.proDescription = proDescription
         self.proImage = proImage
-        self.typeID = typeID
+        self.proTypeID = proTypeID
 
 class Product(db.Model):
     proID = db.Column(db.String(255), primary_key=True)
@@ -23,31 +23,31 @@ class Product(db.Model):
     proStock = db.Column(db.Integer, nullable=False)
     proHeight = db.Column(db.Float, nullable=False)
     proLength = db.Column(db.Float, nullable=False)
+    proBuyPrice = db.Column(db.Float, nullable=False)
     proWidth = db.Column(db.Float, nullable=False)
     proWeight = db.Column(db.Float, nullable=False)
-    proCostPrice = db.Column(db.Float, nullable=False)
-    proSellingPrice = db.Column(db.Float, nullable=False)
+    proSellPrice = db.Column(db.Float, nullable=False)
     proMinStock = db.Column(db.Integer, nullable=False)
     proMaxStock = db.Column(db.Integer, nullable=False)
     proDescription = db.Column(db.Text, nullable=False)
     proImage = db.Column(db.String(255), nullable=False)
-    typeID = db.Column(db.String(255), db.ForeignKey('product_type.typeID'), nullable=False)
+    proTypeID = db.Column(db.String(255), db.ForeignKey('producttype.ptID'), nullable=False)
     
-    def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float, proWeight: float, proCostPrice: float, proSellingPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, typeID: str):
+    def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float,proBuyPrice: float, proWeight: float, proSellPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, proTypeID: str):
         self.proID = uuid.uuid4().hex
         self.proName = proName
         self.proStock = proStock
         self.proHeight = proHeight
         self.proLength = proLength
         self.proWidth = proWidth
+        self.proBuyPrice = proBuyPrice
         self.proWeight = proWeight
-        self.proCostPrice = proCostPrice
-        self.proSellingPrice = proSellingPrice
+        self.proSellPrice = proSellPrice
         self.proMinStock = proMinStock
         self.proMaxStock = proMaxStock
         self.proDescription = proDescription
         self.proImage = proImage
-        self.typeID = typeID
+        self.proTypeID = proTypeID
         
     def toJSON(self):
         return {
@@ -56,13 +56,13 @@ class Product(db.Model):
             "proStock": self.proStock,
             "proHeight": self.proHeight,
             "proLength": self.proLength,
+            "proBuyPrice": self.proBuyPrice,
             "proWidth": self.proWidth,
             "proWeight": self.proWeight,
-            "proCostPrice": self.proCostPrice,
-            "proSellingPrice": self.proSellingPrice,
+            "proSellPrice": self.proSellPrice,
             "proMinStock": self.proMinStock,
             "proMaxStock": self.proMaxStock,
             "proDescription": self.proDescription,
             "proImage": self.proImage,
-            "typeID": self.typeID
+            "proTypeID": self.proTypeID
         }

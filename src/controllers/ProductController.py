@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from services.ProductServices import getProductById, getAllProducts, createProduct, updateProduct, deleteProduct
+from services.ProductsServices import getProductById, getAllProducts, createProduct, updateProduct, deleteProduct
 from middlewares.ProductMiddleware import productMiddleWare
 
 def getProducts():
