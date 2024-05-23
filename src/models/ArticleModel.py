@@ -14,10 +14,10 @@ class Article(db.Model):
      __tablename__ = 'article'
      artID = db.Column(db.String(128), primary_key=True)
      artTitle = db.Column(db.String(128), nullable=False)
-     artShortDescription= db.Column(db.Text, nulleable=False)
-     artContent = db.Column(db.Text, nulleable=False)
+     artShortDescription= db.Column(db.Text)
+     artContent = db.Column(db.Text)
      artAuthor = db.Column(db.String(128), nullable=False)
-     artDate = db.Column(db.Date, nulleable=False)
+     artDate = db.Column(db.Date)
 
      def __init__(self, artTitle: str, artShortDescription: str, artContent: str, artAuthor: str, artDate: datetime):
         self.artID = uuid.uuid4().hex
