@@ -3,7 +3,7 @@ from models.ProductTypeModel import ProductType
 import uuid
 
 class ProductModel:
-    def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float, proWeight: float,proBuyPrice: float,  proSellPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, proTypeID: str):
+    def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float, proWeight: float,proBuyPrice: float,  proSellPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proTypeID: str):
         self.proName = proName
         self.proStock = proStock
         self.proHeight = proHeight
@@ -15,7 +15,7 @@ class ProductModel:
         self.proMinStock = proMinStock
         self.proMaxStock = proMaxStock
         self.proDescription = proDescription
-        self.proImage = proImage
+        self.proImage = None
         self.proTypeID = proTypeID
 
 class Product(db.Model):
