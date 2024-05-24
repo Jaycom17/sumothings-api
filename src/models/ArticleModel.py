@@ -3,7 +3,7 @@ import uuid
 import datetime
 
 class ArticleModel:
-    def __init__(self, artTitle: str, artShortDescription: str, artContent: str, artAuthor: str, artDate: datetime):
+    def __init__(self, artTitle: str, artShortDescription: str, artContent: str, artAuthor: str, artDate: str):
         self.artTitle = artTitle
         self.artShortDescription = artShortDescription
         self.artContent = artContent
@@ -19,7 +19,7 @@ class Article(db.Model):
      artAuthor = db.Column(db.String(128), nullable=False)
      artDate = db.Column(db.Date)
 
-     def __init__(self, artTitle: str, artShortDescription: str, artContent: str, artAuthor: str, artDate: datetime):
+     def __init__(self, artTitle: str, artShortDescription: str, artContent: str, artAuthor: str, artDate: str):
         self.artID = uuid.uuid4().hex
         self.artTitle = artTitle
         self.artShortDescription = artShortDescription
