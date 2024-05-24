@@ -1,5 +1,6 @@
 from database.database import db
 from models.ProductModel import Product
+import os
 
 
 
@@ -79,6 +80,7 @@ def updateProduct(productID,data):
 def deleteProduct(productID):
     try:
         product = Product.query.filter_by(proID = productID).first()
+        os.remove(os.path.join(product.proImage))
         db.session.delete(product)
         db.session.commit()
         return {"message": "Product deleted"}
