@@ -1,6 +1,8 @@
-from flask import request, jsonify
+from flask import request, jsonify, request
 from services.ProductsServices import getProductById, getAllProducts, createProduct, updateProduct, deleteProduct
 from middlewares.ProductMiddleware import productMiddleWare
+
+UPLOAD_FOLDER = '/images'
 
 def getProducts():
 
@@ -24,7 +26,7 @@ def postProduct():
 
     if productToCreate == None:
         return jsonify({"error": "Invalid body"}), 400
-
+        
     product = createProduct(productToCreate)
     
     if product == None:
