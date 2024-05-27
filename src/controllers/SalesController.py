@@ -32,7 +32,7 @@ def postSale():
     return jsonify(sale), 200
 
 def putSale(salId):
-    saleToUpdate = salesMiddleWare(request.get_json())
+    saleToUpdate = SalesMiddleware(request.get_json())
 
     if saleToUpdate == None:
         return jsonify({"error": "Cuerpo de solicitud inválido"}), 400

@@ -7,6 +7,7 @@ from database.database import db
 from routes.DealersRoutes import setupRoutesDealer
 from routes.ShoppingsRoutes import setupRoutesShopping
 from routes.SalesRoutes import setupRoutesSales
+from routes.ProductsRoutes import setupRoutesProduct
 
 app = Flask(__name__)
 
@@ -18,6 +19,8 @@ def init_app(config):
     setupRoutesDealer(app)
     setupRoutesShopping(app)
     setupRoutesSales(app)
+    setupRoutesProduct(app)
+    
 
     return app
 
