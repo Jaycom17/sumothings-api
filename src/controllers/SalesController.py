@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from middlewares.SalesMiddleware import salesMiddleWare
-from services.SalesServices import getAllSales, getSaleById, createSale, updateSale, deleteSale
+from middlewares.SalesMiddleware import SalesMiddleware
+from services.SalesServices import  getAllSales, getSaleById, createSale, updateSale, deleteSale
 
 def getSales():
     sales = getAllSales()
@@ -19,7 +19,7 @@ def getSale(salId):
     return sale, 200
 
 def postSale():
-    saleToCreate = salesMiddleWare(request.get_json())
+    saleToCreate = SalesMiddleware(request.get_json())
 
     if saleToCreate == None:
         return jsonify({"error": "Cuerpo de solicitud inválido"}), 400
