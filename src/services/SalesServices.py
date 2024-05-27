@@ -1,11 +1,11 @@
 from database.database import db
 import uuid
 from datetime import datetime
-from models.SalesModel import SalesModel
+from models.SalesModel import Sales
 
 def getAllSales():
     try:
-        data = SalesModel.query.all()
+        data = Sales.query.all()
         return [sales.toJSON() for sales in data]
     except Exception as e:
         print(str(e))
@@ -13,14 +13,14 @@ def getAllSales():
     
 def getSaleById(saleId):
     try:
-        data = SalesModel.query.filter_by(salID=saleId).first()
+        data = Sales.query.filter_by(salID=saleId).first()
         return data.toJSON()
     except Exception as e:
         return None
 
 def createSale(data):
     try:
-        sales = SalesModel(
+        sales = Sales(
             data.proID,
             data.cliID,
             data.salReceipt,
@@ -37,7 +37,7 @@ def createSale(data):
 
 def updateSale(saleId, data):
     try:
-        sales = SalesModel.query.filter_by(salID=saleId).first()
+        sales = Sales.query.filter_by(salID=saleId).first()
         
         if sales.proID != data.proID:
             sales.proID = data.proID
@@ -68,7 +68,7 @@ def updateSale(saleId, data):
 
 def deleteSale(saleId):
     try:
-        sales = SalesModel.query.filter_by(salID=saleId).first()
+        sales = Sales.query.filter_by(salID=saleId).first()
         db.session.delete(sales)
         db.session.commit()
         return {"message": "Sale deleted"}

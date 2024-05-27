@@ -1,6 +1,7 @@
 from database.database import db
 import uuid
 from datetime import datetime
+from models.ClientModel import Client
 
 class SalesModel:
     def __init__(self, proID: str, cliID: str, salReceipt: str, salDate: datetime, salProductUnits: int, salPrice: float, salTaxes: float):
