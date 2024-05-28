@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_cors import CORS
+
 from config.config import config
 from database.database import configure_database
 from database.database import db
@@ -10,6 +12,7 @@ from routes.SalesRoutes import setupRoutesSales
 from routes.ProductsRoutes import setupRoutesProduct
 
 app = Flask(__name__)
+CORS(app)
 
 def init_app(config):
     # Configuration
