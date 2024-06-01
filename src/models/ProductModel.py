@@ -15,6 +15,7 @@ class ProductModel:
         self.proMinStock = proMinStock
         self.proMaxStock = proMaxStock
         self.proDescription = proDescription
+        self.proImage = None
         self.proTypeID = proTypeID
         self.proImage = None
 
