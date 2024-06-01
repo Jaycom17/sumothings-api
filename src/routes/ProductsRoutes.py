@@ -1,13 +1,17 @@
-from flask import Blueprint, jsonify
-from services.ProductsServices import ProductsServices
+from flask import Blueprint
+from controllers.ProductController import getProducts, getProduct, postProduct, putProduct, dropProduct
 
-import traceback
 
-main = Blueprint('products', __name__)
+def setupRoutesProduct(app):
+    bp = Blueprint('products', __name__)
 
-@main.route('/', methods=['GET'])
-def get_products():
-    try:
-        return jsonify(ProductsServices.get_products())
-    except Exception as e:
-        return jsonify({'error': str(e), 'traceback': traceback.format_exc()})
+    # Rutas para CRUD de items productos
+    bp.route('/products', methods=['GET'])(getProducts)
+    bp.route('/products/<string:productId>', methods=['GET'])(getProduct)
+    bp.route('/products', methods=['POST'])(postProduct)
+    bp.route('/products/<string:productId>', methods=['PUT'])(putProduct)
+    bp.route('/products/<string:productId>', methods=['DELETE'])(dropProduct)
+    
+    app.register_blueprint(bp)
+
+

@@ -2,19 +2,21 @@ from database.database import db
 import uuid
 
 class ProductTypeModel:
-    def __init__(self, typeName: str):
-        self.typeName = typeName
+    def __init__(self, ptName: str):
+        self.ptName = ptName
 
 class ProductType(db.Model):
-    typeID = db.Column(db.String(255), primary_key=True)
-    typeName = db.Column(db.String(128), nullable=False, unique=True)
+    __tablename__ = 'producttype'
+    ptID = db.Column(db.String(255), primary_key=True)
+    ptName = db.Column(db.String(128), nullable=False, unique=True)
+    products = db.relationship('Product', backref='producttype', lazy=True)    
     
-    def __init__(self, typeName: str):
-        self.typeID = uuid.uuid4().hex
-        self.typeName = typeName
+    def __init__(self, ptName: str):
+        self.ptID = uuid.uuid4().hex
+        self.ptName = ptName
         
     def toJSON(self):
         return {
-            "typeID": self.typeID,
-            "typeName": self.typeName
+            "ptID": self.ptID,
+            "ptName": self.ptName
         }
