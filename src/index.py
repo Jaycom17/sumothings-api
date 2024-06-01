@@ -10,6 +10,10 @@ from routes.DealersRoutes import setupRoutesDealer
 from routes.ShoppingsRoutes import setupRoutesShopping
 from routes.SalesRoutes import setupRoutesSales
 from routes.ProductsRoutes import setupRoutesProduct
+from routes.ArticlesRoutes import setupRoutesArticle
+from routes.TypesRoutes import setupRoutesType
+
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
@@ -23,7 +27,10 @@ def init_app(config):
     setupRoutesShopping(app)
     setupRoutesSales(app)
     setupRoutesProduct(app)
-    
+    setupRoutesArticle(app)
+    setupRoutesType(app)
+
+    CORS(app)
 
     return app
 
