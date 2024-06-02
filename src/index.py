@@ -4,6 +4,7 @@ from flask_cors import CORS
 from config.config import config
 from database.database import configure_database
 from database.database import db
+import os
 
 # Routes
 from routes.DealersRoutes import setupRoutesDealer
@@ -17,6 +18,12 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(),'images')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 def init_app(config):
     # Configuration

@@ -1,5 +1,8 @@
 from database.database import db
 from models.ProductModel import Product
+import os
+
+
 
 def getAllProducts():
     try:
@@ -77,9 +80,14 @@ def updateProduct(productID,data):
 def deleteProduct(productID):
     try:
         product = Product.query.filter_by(proID = productID).first()
+        os.remove(os.path.join(product.proImage))
         db.session.delete(product)
         db.session.commit()
         return {"message": "Product deleted"}
     except Exception as e:
         return None
-                            
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}                        
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
