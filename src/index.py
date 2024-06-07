@@ -13,6 +13,8 @@ from routes.SalesRoutes import setupRoutesSales
 from routes.ProductsRoutes import setupRoutesProduct
 from routes.ArticlesRoutes import setupRoutesArticle
 from routes.TypesRoutes import setupRoutesType
+from routes.AdminUserRoutes import setupRoutesAdminUser
+from routes.ClientsRoutes import setupRoutesClients
 
 from flask_cors import CORS
 
@@ -36,6 +38,8 @@ def init_app(config):
     setupRoutesProduct(app)
     setupRoutesArticle(app)
     setupRoutesType(app)
+    setupRoutesAdminUser(app)
+    setupRoutesClients(app)
 
     CORS(app)
 
