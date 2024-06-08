@@ -35,6 +35,7 @@ class Product(db.Model):
     proDescription = db.Column(db.Text, nullable=False)
     proImage = db.Column(db.String(255), nullable=False)
     proTypeID = db.Column(db.String(255), db.ForeignKey('producttype.ptID'), nullable=False)
+    shoppings = db.relationship('Shopping', backref='product', lazy=True)
 
     
     def __init__(self, proName: str, proStock: int, proHeight: float, proLength: float, proWidth: float,proBuyPrice: float, proWeight: float, proSellPrice: float, proMinStock: int, proMaxStock: int, proDescription: str, proImage: str, proTypeID: str):

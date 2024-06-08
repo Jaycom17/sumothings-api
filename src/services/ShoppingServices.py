@@ -1,9 +1,21 @@
+from sqlalchemy import func
 from database.database import db
 from models.ShoppingModel import Shopping
 
 def getAllShoppings():
     try:
-        data = Shopping.query.all()
+        # Primero, obtén los shoReceipt únicos
+        unique_receipts = db.session.query(Shopping.shoReceipt).group_by(Shopping.shoReceipt).subquery()
+
+        # Luego, une esto con la tabla original para obtener los detalles
+        # Aquí, estoy asumiendo que quieres el primer registro para cada shoReceipt
+        data = db.session.query(Shopping).join(
+            unique_receipts,
+            Shopping.shoReceipt == unique_receipts.c.shoReceipt
+        ).all()
+
+        print(data)
+
         return [shopping.toJSON() for shopping in data]
     except Exception as e:
         print(str(e))
