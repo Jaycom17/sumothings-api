@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
 
-class Client():
+class ClientModel():
     def __init__(self, cliID, cliFullName, cliEmail, cliPassword, cliPhone, cliAddress, cliNIT, cliCompanyName, cliCity, cliPostalCode, cliCedula):
         self.cliID = cliID
         self.cliFullName = cliFullName

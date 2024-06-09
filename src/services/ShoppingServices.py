@@ -4,26 +4,29 @@ from models.ShoppingModel import Shopping
 
 def getAllShoppings():
     try:
-        # Primero, obtén los shoReceipt únicos
-        unique_receipts = db.session.query(Shopping.shoReceipt).group_by(Shopping.shoReceipt).subquery()
-
-        # Luego, une esto con la tabla original para obtener los detalles
-        # Aquí, estoy asumiendo que quieres el primer registro para cada shoReceipt
-        data = db.session.query(Shopping).join(
-            unique_receipts,
-            Shopping.shoReceipt == unique_receipts.c.shoReceipt
-        ).all()
-
-        print(data)
-
-        return [shopping.toJSON() for shopping in data]
+        receipts = Shopping.query.with_entities(Shopping.shoReceipt).distinct().all()
+        
+        data = []
+        for receipt in receipts:
+            shoppingToAdd = {}
+            shoppingToAdd["shoReceipt"] = receipt[0]
+            shoppingToAdd["products"] = []
+            
+            products = Shopping.query.filter_by(shoReceipt = receipt[0]).all()
+            for product in products:
+                shoppingToAdd["products"].append(product.toJSON())
+                
+            data.append(shoppingToAdd)
+            
+    
+        return data
     except Exception as e:
         print(str(e))
         return None
     
 def getShoppingById(shoppingId):
     try:
-        data = Shopping.query.filter_by(shoID = shoppingId).first()
+        data = Shopping.query.filter_by(shoReceipt = shoppingId).all()
         return data.toJSON()
     except Exception as e:
         return None
@@ -70,9 +73,12 @@ def updateShopping(shoppingId, data):
 
 def deleteShopping(shoppingId):
     try:
-        shopping = Shopping.query.filter_by(shoID = shoppingId).first()
-        db.session.delete(shopping)
-        db.session.commit()
+        shoppings = Shopping.query.filter_by(shoReceipt = shoppingId).all()
+        
+        for shopping in shoppings:
+            db.session.delete(shopping)
+            db.session.commit()
+        
         return {"message": "Shopping deleted"}
     except Exception as e:
         return None
