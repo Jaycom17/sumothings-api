@@ -1,7 +1,16 @@
 from models.ShoppingModel import ShoppingModel
+import uuid
 
 def shoppingMiddleWare(shopping):
     try:
-        return ShoppingModel(shopping["proID"], shopping["deaID"], shopping["shoReceipt"], shopping["shoDate"], shopping["shoProductUnits"], shopping["shoPrice"], shopping["shoTaxes"])
+        
+        shoppings = []
+
+        shoReceipt = str(uuid.uuid4())
+
+        for product in shopping["products"]:
+            shoppings.append(ShoppingModel(product["proID"], shopping["deaID"], shoReceipt, shopping["shoDate"], product["proUnits"], product["proPrice"], product["proTaxes"]))
+
+        return shoppings
     except KeyError as e:
         return None

@@ -1,5 +1,6 @@
 from database.database import db
 import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class AdminUserModel:
     def __init__(self, admEmail:str, admPassword:str):
@@ -14,11 +15,13 @@ class Admin(db.Model):
     def __init__(self, admEmail:str, admPassword:str):
         self.admID = uuid.uuid4().hex
         self.admEmail = admEmail
-        self.admPassword = admPassword
+        self.admPassword = generate_password_hash(admPassword)
         
     def toJSON(self):
         return {
             "admID": self.admID, 
-            "admEmail": self.admEmail,
-            "admPassword": self.admPassword
+            "admEmail": self.admEmail
         }
+        
+    def check_password(self, password):
+        return check_password_hash(self.admPassword, password)
