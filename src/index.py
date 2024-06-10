@@ -13,11 +13,18 @@ from routes.SalesRoutes import setupRoutesSales
 from routes.ProductsRoutes import setupRoutesProduct
 from routes.ArticlesRoutes import setupRoutesArticle
 from routes.TypesRoutes import setupRoutesType
-
+from routes.AdminUserRoutes import setupRoutesAdminUser
+from routes.ClientsRoutes import setupRoutesClients
+from routes.AuthRoutes import setupRoutesAuth
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:4200"}})
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(),'images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -36,6 +43,9 @@ def init_app(config):
     setupRoutesProduct(app)
     setupRoutesArticle(app)
     setupRoutesType(app)
+    setupRoutesAdminUser(app)
+    setupRoutesClients(app)
+    setupRoutesAuth(app)
 
     CORS(app)
 

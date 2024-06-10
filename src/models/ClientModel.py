@@ -1,12 +1,9 @@
 from database.database import db
 import uuid
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class ClientModel():
-    def __init__(self, cliID, cliFullName, cliEmail, cliPassword, cliPhone, cliAddress, cliNIT, cliCompanyName, cliCity, cliPostalCode, cliCedula):
-        self.cliID = cliID
+    def __init__(self, cliFullName, cliEmail, cliPassword, cliPhone, cliAddress, cliNIT, cliCompanyName, cliCity, cliPostalCode, cliCedula):
         self.cliFullName = cliFullName
         self.cliEmail = cliEmail
         self.cliPassword = cliPassword
@@ -37,7 +34,7 @@ class Client(db.Model):
         self.cliID = uuid.uuid4().hex
         self.cliFullName = cliFullName
         self.cliEmail = cliEmail
-        self.cliPassword = bcrypt.generate_password_hash(cliPassword).decode('utf-8')
+        self.cliPassword = generate_password_hash(cliPassword)
         self.cliPhone = cliPhone
         self.cliAddress = cliAddress
         self.cliNIT = cliNIT
@@ -61,4 +58,4 @@ class Client(db.Model):
         }
         
     def check_password(self, password):
-        return bcrypt.check_password_hash(self.cliPassword, password)
+        return check_password_hash(self.cliPassword, password)
