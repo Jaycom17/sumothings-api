@@ -1,17 +1,32 @@
+from sqlalchemy import func
 from database.database import db
 from models.ShoppingModel import Shopping
 
 def getAllShoppings():
     try:
-        data = Shopping.query.all()
-        return [shopping.toJSON() for shopping in data]
+        receipts = Shopping.query.with_entities(Shopping.shoReceipt).distinct().all()
+        
+        data = []
+        for receipt in receipts:
+            shoppingToAdd = {}
+            shoppingToAdd["shoReceipt"] = receipt[0]
+            shoppingToAdd["products"] = []
+            
+            products = Shopping.query.filter_by(shoReceipt = receipt[0]).all()
+            for product in products:
+                shoppingToAdd["products"].append(product.toJSON())
+                
+            data.append(shoppingToAdd)
+            
+    
+        return data
     except Exception as e:
         print(str(e))
         return None
     
 def getShoppingById(shoppingId):
     try:
-        data = Shopping.query.filter_by(shoID = shoppingId).first()
+        data = Shopping.query.filter_by(shoReceipt = shoppingId).all()
         return data.toJSON()
     except Exception as e:
         return None
@@ -58,9 +73,12 @@ def updateShopping(shoppingId, data):
 
 def deleteShopping(shoppingId):
     try:
-        shopping = Shopping.query.filter_by(shoID = shoppingId).first()
-        db.session.delete(shopping)
-        db.session.commit()
+        shoppings = Shopping.query.filter_by(shoReceipt = shoppingId).all()
+        
+        for shopping in shoppings:
+            db.session.delete(shopping)
+            db.session.commit()
+        
         return {"message": "Shopping deleted"}
     except Exception as e:
         return None

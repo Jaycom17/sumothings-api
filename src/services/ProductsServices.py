@@ -1,10 +1,36 @@
 from database.database import db
 from models.ProductModel import Product
+from models.ProductTypeModel import ProductType
+import os
+
 
 def getAllProducts():
     try:
-        data = Product.query.all()
-        return [product.toJSON() for product in data]
+        data = db.session.query(Product, ProductType)\
+                  .join(ProductType, Product.proTypeID == ProductType.ptID)\
+                  .all()
+                  
+        dataJson = []          
+        for product in data:
+            dataDict = {}
+            dataDict["proID"] = product.Product.proID
+            dataDict["proName"] = product.Product.proName
+            dataDict["proStock"] = product.Product.proStock
+            dataDict["proHeight"] = product.Product.proHeight
+            dataDict["proWidth"] = product.Product.proWidth
+            dataDict["proLength"] = product.Product.proLength
+            dataDict["proWeight"] = product.Product.proWeight
+            dataDict["proBuyPrice"] = product.Product.proBuyPrice
+            dataDict["proSellPrice"] = product.Product.proSellPrice
+            dataDict["proMinStock"] = product.Product.proMinStock
+            dataDict["proMaxStock"] = product.Product.proMaxStock
+            dataDict["proDescription"] = product.Product.proDescription
+            dataDict["proImage"] = product.Product.proImage
+            dataDict["proTypeID"] = product.ProductType.ptName
+            dataJson.append(dataDict)
+            
+        
+        return dataJson 
     except Exception as e:
         print(str(e))
         return None
@@ -19,7 +45,7 @@ def getProductById(productID):
 
 def createProduct(data):
     try:
-        product = Product(data.proName, data.proStock, data.proHeight, data.proWidth, data.proLength, data.proWeight, data.proBuyPrice, data.proSellPrice, data.proMinStock, data.proMaxStock, data.proDescription, data.proImage, data.proTypeID)
+        product = Product(data.proName, data.proStock, data.proHeight, data.proLength, data.proWidth, data.proBuyPrice, data.proWeight, data.proSellPrice, data.proMinStock, data.proMaxStock, data.proDescription, data.proImage, data.proTypeID)
         db.session.add(product)
         db.session.commit()
         return {"message": "Product created"}
@@ -77,9 +103,15 @@ def updateProduct(productID,data):
 def deleteProduct(productID):
     try:
         product = Product.query.filter_by(proID = productID).first()
+        os.remove(os.path.join("images/",product.proImage.split("/")[4]))
         db.session.delete(product)
         db.session.commit()
         return {"message": "Product deleted"}
     except Exception as e:
+        print(str(e))
         return None
-                            
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}                        
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

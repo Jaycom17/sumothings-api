@@ -1,15 +1,26 @@
 from flask import Flask
+from flask_cors import CORS
+
 from config.config import config
 from database.database import configure_database
 from database.database import db
+import os
 
 # Routes
 from routes.DealersRoutes import setupRoutesDealer
 from routes.ShoppingsRoutes import setupRoutesShopping
+from routes.SalesRoutes import setupRoutesSales
 from routes.ProductsRoutes import setupRoutesProduct
 from routes.ArticlesRoutes import setupRoutesArticle
 
+
 # CORS
+
+from routes.TypesRoutes import setupRoutesType
+from routes.AdminUserRoutes import setupRoutesAdminUser
+from routes.ClientsRoutes import setupRoutesClients
+from routes.AuthRoutes import setupRoutesAuth
+
 from flask_cors import CORS
 
 # SWAGGER
@@ -17,6 +28,18 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:4200"}})
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(),'images')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 def init_app(config):
 
@@ -49,8 +72,13 @@ def init_app(config):
     configure_database(app)
     setupRoutesDealer(app)
     setupRoutesShopping(app)
+    setupRoutesSales(app)
     setupRoutesProduct(app)
     setupRoutesArticle(app)
+    setupRoutesType(app)
+    setupRoutesAdminUser(app)
+    setupRoutesClients(app)
+    setupRoutesAuth(app)
 
     CORS(app)
 

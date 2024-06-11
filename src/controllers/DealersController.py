@@ -1,9 +1,17 @@
 from flask import request, jsonify
 from services.DealersServices import getDealerById, getAllDealers, createDealer, updateDealer, deleteDealer
 from middlewares.DealerMiddleware import dealerMiddleWare
+from middlewares.AuthMiddleware import verifyAdmin
 
 def getDealers():
+    
+    verify = verifyAdmin(request)
 
+    try:
+        verify.admID
+    except AttributeError as error:
+        return verify
+    
     dealers = getAllDealers()
     
     if dealers == None:

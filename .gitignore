@@ -1,2 +1,11 @@
-venv
+./venv
+
 .env    
+
+src/**/__pycache__/
+
+/images/
+
+src/**/__pycache__
+
+notasJuan.txt
