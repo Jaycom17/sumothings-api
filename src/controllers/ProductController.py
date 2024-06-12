@@ -71,10 +71,46 @@ def postProduct():
 
 def putProduct(productId):
     
-    productToUpdate = productMiddleWare(request.get_json())
+    productToUpdate = productMiddleWare(request.form.to_dict())
     
     if productToUpdate == None:
         return jsonify({"error": "Invalid body"}), 400
+    
+    if 'file' not in request.files:
+        flash('No file part')
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+    
+    if file.filename == '':
+        flash('No selected file')
+        return jsonify({"error": "No selected file"}), 400
+    
+    else:
+        new_filename = ""
+        
+        previusProduct = getProductById(productId)
+        
+        if file and allowed_file(file.filename):
+            
+            previusImage = previusProduct["proImage"].split("/")[-1]
+            
+            if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], previusImage)):
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], previusImage))
+            
+            original_filename = secure_filename(file.filename)
+            _, file_extension = os.path.splitext(original_filename)
+            new_filename = str(uuid.uuid4()) + file_extension
+
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'])
+
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+            file.save(file_path)
+        else:
+            return jsonify({"error": "Invalid file"}), 400
+            
+        productToUpdate.proImage = f"{config("ACTUAL_URL")}/dwimg/{new_filename}"
     
     product = updateProduct(productId, productToUpdate)
     
