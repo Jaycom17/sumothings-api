@@ -8,7 +8,7 @@ def setupRoutesAdminUser(app):
     bp.route('/adminUser', methods=['GET'])(getAdminUsers)
     bp.route('/adminUser/<string:admID>', methods=['GET'])(getAdminUser)
     bp.route('/adminUser', methods=['POST'])(postAdminUser)
-    bp.route('/adminUser/<string:admID>', methods=['PUT'])(putAdminUser)
+    bp.route('/adminUser', methods=['PUT'])(putAdminUser)
     bp.route('/adminUser/<string:admID>', methods=['DELETE'])(dropAdminUser)
     
     app.register_blueprint(bp)

@@ -1,10 +1,20 @@
 from database.database import db
 import uuid
-from datetime import datetime
 from models.ClientModel import Client
 
 class SalesModel:
-    def __init__(self, proID: str, cliID: str, salReceipt: str, salDate: datetime, salProductUnits: int, salPrice: float, salTaxes: float):
+    def __init__(self, proID: str, cliID: str, salReceipt: str, salDate: str, salProductUnits: int, salPrice: float, salTaxes: float):
+        self.proID = proID
+        self.cliID = cliID
+        self.salReceipt = salReceipt
+        self.salDate = salDate
+        self.salProductUnits = salProductUnits
+        self.salPrice = salPrice
+        self.salTaxes = salTaxes
+        
+class SalesModelToUpdate:
+    def __init__(self, salID: str, proID: str, cliID: str, salReceipt: str, salDate: str, salProductUnits: int, salPrice: float, salTaxes: float):
+        self.salID = salID
         self.proID = proID
         self.cliID = cliID
         self.salReceipt = salReceipt
@@ -14,18 +24,18 @@ class SalesModel:
         self.salTaxes = salTaxes
 
 class Sales(db.Model):
-    __tablename__ = 'sales'
+    __tablename__ = 'sale'
     
     salID = db.Column(db.String(128), primary_key=True)
     proID = db.Column(db.String(128), db.ForeignKey('product.proID'), nullable=False)
     cliID = db.Column(db.String(128), db.ForeignKey('client.cliID'), nullable=False)
     salReceipt = db.Column(db.String(255), nullable=False)
-    salDate = db.Column(db.Date, nullable=False, default=datetime.utcnow().date)
+    salDate = db.Column(db.Date, nullable=False)
     salProductUnits = db.Column(db.Integer, nullable=False)
     salPrice = db.Column(db.Numeric(14, 2), nullable=False)
     salTaxes = db.Column(db.Numeric(14, 2), nullable=False)
     
-    def __init__(self, proID: str, cliID: str, salReceipt: str, salDate: datetime, salProductUnits: int, salPrice: float, salTaxes: float):
+    def __init__(self, proID: str, cliID: str, salReceipt: str, salDate: str, salProductUnits: int, salPrice: float, salTaxes: float):
         self.salID = uuid.uuid4().hex
         self.proID = proID
         self.cliID = cliID

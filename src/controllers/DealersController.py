@@ -7,10 +7,8 @@ def getDealers():
     
     verify = verifyAdmin(request)
 
-    try:
-        verify.admID
-    except AttributeError as error:
-        return verify
+    if hasattr(verify, 'admID') == False:
+        return jsonify({"error": "Unauthorized"}), 401
     
     dealers = getAllDealers()
     
@@ -21,6 +19,11 @@ def getDealers():
 
 def getDealer(dealerId):
     
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     dealer = getDealerById(dealerId)
     
     if dealer == None:
@@ -29,6 +32,11 @@ def getDealer(dealerId):
     return dealer, 200
 
 def postDealer():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
 
     dealerToCreate = dealerMiddleWare(request.get_json())
 
@@ -44,6 +52,11 @@ def postDealer():
 
 def putDealer(dealerId):
     
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     dealerToUpdate = dealerMiddleWare(request.get_json())
     
     if dealerToUpdate == None:
@@ -57,11 +70,16 @@ def putDealer(dealerId):
     return jsonify(dealer), 200
 
 def dropDealer(dealerId):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
         
-        dealer = deleteDealer(dealerId)
-        
-        if dealer == None:
-            return jsonify({"error": "An error occurred while deleting a dealer"}), 500
-        
-        return jsonify(dealer), 200
+    dealer = deleteDealer(dealerId)
+    
+    if dealer == None:
+        return jsonify({"error": "An error occurred while deleting a dealer"}), 500
+    
+    return jsonify(dealer), 200
 

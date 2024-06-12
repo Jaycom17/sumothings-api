@@ -1,8 +1,14 @@
 from flask import request, jsonify
 from services.AdminUsersServices import getAdminUserById, getAllAdminUsers, createAdminUser, updateAdminUser, deleteAdminUser
 from middlewares.AdminUserMiddleware import adminUserMiddleWare
+from middlewares.AuthMiddleware import verifyAdmin
 
 def getAdminUsers():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
 
     adminUsers = getAllAdminUsers()
     
@@ -13,6 +19,11 @@ def getAdminUsers():
 
 def getAdminUser(adminUserId):
     
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     adminUser = getAdminUserById(adminUserId)
     
     if adminUser == None:
@@ -21,6 +32,11 @@ def getAdminUser(adminUserId):
     return adminUser, 200
 
 def postAdminUser():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
 
     adminUserToCreate = adminUserMiddleWare(request.get_json())
 
@@ -34,25 +50,34 @@ def postAdminUser():
     
     return jsonify(adminUser), 200
 
-def putAdminUser(adminUserId):
+def putAdminUser():
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
     
     adminUserToUpdate = adminUserMiddleWare(request.get_json())
     
     if adminUserToUpdate == None:
         return jsonify({"error": "Invalid body"}), 400
     
-    adminUser = updateAdminUser(adminUserId, adminUserToUpdate)
+    adminUser = updateAdminUser(verify.admID, adminUserToUpdate)
     
     if adminUser == None:
         return jsonify({"error": "An error occurred while updating a admin user"}), 500
     
     return jsonify(adminUser), 200
 
-def dropAdminUser(adminUserId):
+def dropAdminUser(admID):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
         
-        adminUser = deleteAdminUser(adminUserId)
-        
-        if adminUser == None:
-            return jsonify({"error": "An error occurred while deleting a admin user"}), 500
-        
-        return jsonify(adminUser), 200
+    adminUser = deleteAdminUser(admID)
+    
+    if adminUser == None:
+        return jsonify({"error": "An error occurred while deleting a admin user"}), 500
+    
+    return jsonify(adminUser), 200
