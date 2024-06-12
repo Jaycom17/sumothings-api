@@ -1,6 +1,8 @@
 from sqlalchemy import func
 from database.database import db
 from models.ShoppingModel import Shopping
+from models.ProductModel import Product
+from models.DealerModel import Dealer
 
 def getAllShoppings():
     try:
@@ -9,12 +11,16 @@ def getAllShoppings():
         data = []
         for receipt in receipts:
             shoppingToAdd = {}
-            shoppingToAdd["shoReceipt"] = receipt[0]
-            shoppingToAdd["products"] = []
-            
+            shoppingToAdd["shoReceipt"] = receipt[0]        
             products = Shopping.query.filter_by(shoReceipt = receipt[0]).all()
+            shoppingToAdd["shoDate"] = products[0].shoDate
+            shoppingToAdd["products"] = []
             for product in products:
                 shoppingToAdd["products"].append(product.toJSON())
+                productToAdd = Product.query.filter_by(proID = product.proID).first()
+                shoppingToAdd["products"][-1]["proName"] = productToAdd.proName
+                dealerToAdd = Dealer.query.filter_by(deaID = product.deaID).first()
+                shoppingToAdd["deaName"] = dealerToAdd.deaFullName
                 
             data.append(shoppingToAdd)
             
@@ -27,7 +33,17 @@ def getAllShoppings():
 def getShoppingById(shoppingId):
     try:
         data = Shopping.query.filter_by(shoReceipt = shoppingId).all()
-        return data.toJSON()
+        info = {}
+        info["shoReceipt"] = shoppingId
+        info["shoDate"] = data[0].shoDate
+        dealerToAdd = Dealer.query.filter_by(deaID = data[0].deaID).first()
+        info["deaName"] = dealerToAdd.deaFullName
+        info["products"] = []
+        for product in data:
+            productToAdd = Product.query.filter_by(proID = product.proID).first()
+            info["products"].append(product.toJSON())
+            info["products"][-1]["proName"] = productToAdd.proName
+        return info
     except Exception as e:
         return None
 
