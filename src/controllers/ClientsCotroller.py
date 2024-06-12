@@ -35,6 +35,9 @@ def postClient():
 
     clientToCreate = clientMiddleWare(request.get_json())
 
+    # Imprimir los datos del cliente recibidos
+    print("Datos del cliente recibidos:", clientToCreate)
+
     if clientToCreate == None:
         return jsonify({"error": "Invalid body"}), 400
 
@@ -72,3 +75,25 @@ def dropClient(cliId):
         return jsonify({"error": "An error occurred while deleting a client"}), 500
     
     return jsonify(client), 200
+    
+from flask import request, jsonify
+from services.ClientsServices import getClientByEmailAndPassword
+
+def loginClient():
+    # Obtener datos de inicio de sesión del cuerpo de la solicitud
+    data = request.get_json()
+
+    # Imprimir los datos recibidos para el inicio de sesión
+    print("Datos de inicio de sesión recibidos:", data)
+
+    # Verificar si se proporcionaron el correo electrónico y la contraseña
+    if 'email' not in data or 'password' not in data:
+        return jsonify({"error": "Correo electrónico y contraseña son obligatorios"}), 400
+
+    # Llamar al servicio para autenticar al cliente
+    client = getClientByEmailAndPassword(data['email'], data['password'])
+
+    if client:
+        return jsonify({"message": "Inicio de sesión exitoso", "client": client}), 200
+    else:
+        return jsonify({"error": "Credenciales inválidas"}), 401

@@ -1,5 +1,8 @@
 from database.database import db
 from models.ClientModel import Client
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 def getAllClients():
     try:
@@ -79,3 +82,25 @@ def deleteClient(cliId):
         return {"message": "Client deleted"}
     except Exception as e:
         return None
+
+def getClientByEmailAndPassword(email, password):
+    try:
+        # Obtener el cliente utilizando el correo electrónico proporcionado
+        client = Client.query.filter_by(cliEmail=email).first()
+        
+        if client:
+            # Verificar si la contraseña coincide
+            
+            if (client.cliPassword == password):
+                print("Contraseña verificada correctamente")
+                return client.toJSON()
+            else:
+                print("Contraseña incorrecta")
+                return None
+        else:
+            print("Cliente no encontrado")
+            return None
+    except Exception as e:
+        print(str(e))
+        return None
+

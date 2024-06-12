@@ -34,7 +34,8 @@ class Client(db.Model):
         self.cliID = uuid.uuid4().hex
         self.cliFullName = cliFullName
         self.cliEmail = cliEmail
-        self.cliPassword = generate_password_hash(cliPassword)
+        self.cliPassword = cliPassword
+        #self.cliPassword = bcrypt.generate_password_hash(cliPassword).decode('utf-8')
         self.cliPhone = cliPhone
         self.cliAddress = cliAddress
         self.cliNIT = cliNIT
