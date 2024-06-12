@@ -10,7 +10,7 @@ def authenticate(email, password):
     if user and user.check_password(password):
         return user
     return None
-
+    
 def authenticateAdmin(email, password):
     user = Admin.query.filter_by(admEmail = email).first()
     

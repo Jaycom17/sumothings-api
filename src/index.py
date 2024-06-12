@@ -16,6 +16,7 @@ from routes.TypesRoutes import setupRoutesType
 from routes.AdminUserRoutes import setupRoutesAdminUser
 from routes.ClientsRoutes import setupRoutesClients
 from routes.AuthRoutes import setupRoutesAuth
+from routes.EmailRoutes import setupRoutesEmail
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -24,7 +25,11 @@ CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://local
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Credentials', 'true')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS, GET, PUT, DELETE')
+    response.headers.add('X-DNS-Prefetch-Control', 'off')
     return response
+
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(),'images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -46,6 +51,7 @@ def init_app(config):
     setupRoutesAdminUser(app)
     setupRoutesClients(app)
     setupRoutesAuth(app)
+    setupRoutesEmail(app)
 
     CORS(app)
 
