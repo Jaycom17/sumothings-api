@@ -1,5 +1,5 @@
 from flask import Blueprint
-from controllers.ProductController import getProducts, getProduct, postProduct, putProduct, dropProduct,download_file
+from controllers.ProductController import getProducts, getProduct, postProduct, putProduct, dropProduct,download_file, getProductsBrief, getProductsStatus
 
 
 def setupRoutesProduct(app):
@@ -12,6 +12,8 @@ def setupRoutesProduct(app):
     bp.route('/products', methods=['POST'])(postProduct)
     bp.route('/products/<string:productId>', methods=['PUT'])(putProduct)
     bp.route('/products/<string:productId>', methods=['DELETE'])(dropProduct)
+    bp.route('/products/brief', methods=['GET'])(getProductsBrief)
+    bp.route('/products/status', methods=['GET'])(getProductsStatus)
     
     app.register_blueprint(bp)
     

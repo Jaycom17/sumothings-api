@@ -1,5 +1,6 @@
 from database.database import db
 from models.AdminUserModel import Admin
+from werkzeug.security import generate_password_hash
 
 def getAllAdminUsers():
     try:
@@ -28,12 +29,14 @@ def createAdminUser(data):
 def updateAdminUser(adminUserId, data):
     try:
         adminUser = Admin.query.filter_by(admID = adminUserId).first()
-            
+        
+        newPass = generate_password_hash(data.admPassword)
+        
         if adminUser.admEmail != data.admEmail:
             adminUser.admEmail = data.admEmail
             
-        if adminUser.admPassword != data.admPassword:
-            adminUser.admPassword = data.admPassword
+        if adminUser.admPassword != newPass:
+            adminUser.admPassword = newPass
         
         db.session.commit()
         return {"message": "Admin user updated"}

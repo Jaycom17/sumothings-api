@@ -13,6 +13,17 @@ class ShoppingModel:
         self.shoPrice = shoPrice
         self.shoTaxes = shoTaxes
 
+class ShoppingModelToUpdate:
+    def __init__(self,shoID: str , proID: str, deaID: str, shoReceipt: str, shoDate: str, shoProductUnits: int, shoPrice: float, shoTaxes: float):
+        self.shoID = shoID
+        self.proID = proID
+        self.deaID = deaID
+        self.shoReceipt = shoReceipt
+        self.shoDate = shoDate
+        self.shoProductUnits = shoProductUnits
+        self.shoPrice = shoPrice
+        self.shoTaxes = shoTaxes
+
 class Shopping(db.Model):
     __tablename__ = 'shopping'
     shoID = db.Column(db.String(255), primary_key=True)

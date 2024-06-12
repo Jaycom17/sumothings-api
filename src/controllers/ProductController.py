@@ -1,8 +1,11 @@
 from flask import request, jsonify
 from services.ProductsServices import getProductById, getAllProducts, createProduct, updateProduct, deleteProduct, allowed_file
+from services.ClientsServices import getAllClients
+from services.SalesServices import getAllSales
 from middlewares.ProductMiddleware import productMiddleWare
+from middlewares.AuthMiddleware import verifyAdmin
 import os
-from flask import Flask, flash, redirect, url_for
+from flask import flash
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from flask import current_app as app
@@ -13,6 +16,11 @@ import uuid
 UPLOAD_FOLDER = '/images'
 
 def getProducts():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
 
     products = getAllProducts()
     
@@ -21,7 +29,32 @@ def getProducts():
     
     return products, 200
 
+def getProductsBrief():
+    products = getAllProducts()
+    
+    if products == None:
+        return jsonify({"error": "An error occurred while getting all products"}), 500
+    
+    briefProducts = []
+    
+    for product in products:
+        briefProducts.append({
+            "proID": product["proID"],
+            "proName": product["proName"],
+            "proSellPrice": product["proSellPrice"],
+            "proDescription": product["proDescription"],
+            "proImage": product["proImage"],
+            "proTypeID": product["proTypeID"]
+        })
+    
+    return jsonify(briefProducts), 200
+
 def getProduct(productId):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
     
     product = getProductById(productId)
     
@@ -31,6 +64,11 @@ def getProduct(productId):
     return product, 200
 
 def postProduct():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
 
     productToCreate = productMiddleWare(request.form.to_dict())
 
@@ -70,6 +108,11 @@ def postProduct():
 
 
 def putProduct(productId):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
     
     productToUpdate = productMiddleWare(request.form.to_dict())
     
@@ -119,13 +162,84 @@ def putProduct(productId):
     
     return jsonify(product), 200
 def dropProduct(productId):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
         
-        product = deleteProduct(productId)
+    product = deleteProduct(productId)
+    
+    if product == None:
+        return jsonify({"error": "An error occurred while deleting a product"}), 500
+    
+    return jsonify(product), 200
+    
+def getProductsStatus():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
         
-        if product == None:
-            return jsonify({"error": "An error occurred while deleting a product"}), 500
-        
-        return jsonify(product), 200
+    products = getAllProducts()
+    sales = getAllSales()
+    clients = getAllClients()
+    
+    if sales == None or clients == None or products == None:
+        return jsonify({"error": "An error occurred while getting all sales"}), 500
+    
+    #obtener productos con bajo stock
+    data = {
+        "productsWithLowStock" : [],
+        "mostSalingProducts": [],
+        "inventorySummary": {}
+    }
+    
+    #obtener productos con bajo stock
+    countOfProducts = 0
+    for product in products:
+        countOfProducts += product["proStock"]
+        if product["proStock"] < product["proMinStock"]+2:
+            auxProduct = {
+                "proID": product["proID"],
+                "proName": product["proName"],
+                "proStock": product["proStock"],
+                "proPrice": product["proSellPrice"]
+            }
+            data["productsWithLowStock"].append(auxProduct)
+    
+    data["inventorySummary"]["productsNumber"] = countOfProducts
+    
+    #obtener productos mas vendidos
+    auxProducts = []
+    count = 0
+    for product in products:
+        for sale in sales:
+            for item in sale["products"]:
+                if item["proID"] == product["proID"]:
+                    count += item["salProductUnits"]
+        auxProducts.append({
+            "proImage": product["proImage"],
+            "proID": product["proID"],
+            "proName": product["proName"],
+            "proStock": product["proStock"],
+            "proPrice": product["proSellPrice"],
+            "proTotalSales": count 
+        })
+    
+    auxProducts.sort(key=lambda x: x["proTotalSales"], reverse=True)
+    
+    if len(auxProducts) > 5:
+        for i in range(5):
+            data["mostSalingProducts"].append(auxProducts[i])
+    else:
+        data["mostSalingProducts"] = auxProducts
+    
+    data["inventorySummary"]["totalSales"] = len(sales)
+    data["inventorySummary"]["totalClients"] = len(clients)        
+    
+    return data, 200
 
 def download_file(imgName):
     return send_from_directory(app.config["UPLOAD_FOLDER"], imgName)

@@ -2,19 +2,49 @@ from database.database import db
 import uuid
 from datetime import datetime
 from models.SalesModel import Sales
+from models.ProductModel import Product
+from models.ClientModel import Client
 
 def getAllSales():
     try:
-        data = Sales.query.all()
-        return [sales.toJSON() for sales in data]
+        receipts = Sales.query.with_entities(Sales.salReceipt).distinct().all()
+        
+        data = []
+        for receipt in receipts:
+            saleToAdd = {}
+            saleToAdd["salReceipt"] = receipt[0]        
+            products = Sales.query.filter_by(salReceipt = receipt[0]).all()
+            saleToAdd["salDate"] = products[0].salDate
+            saleToAdd["products"] = []
+            for product in products:
+                saleToAdd["products"].append(product.toJSON())
+                productToAdd = Product.query.filter_by(proID = product.proID).first()
+                saleToAdd["products"][-1]["proName"] = productToAdd.proName
+                clientToAdd = Client.query.filter_by(cliID = product.cliID).first()
+                saleToAdd["cliName"] = clientToAdd.cliFullName
+                
+            data.append(saleToAdd)
+            
+    
+        return data
     except Exception as e:
         print(str(e))
         return None
     
 def getSaleById(saleId):
     try:
-        data = Sales.query.filter_by(salID=saleId).first()
-        return data.toJSON()
+        data = Sales.query.filter_by(salReceipt = saleId).all()
+        info = {}
+        info["salReceipt"] = saleId
+        info["salDate"] = data[0].salDate
+        clientToAdd = Client.query.filter_by(cliID = data[0].cliID).first()
+        info["cliName"] = clientToAdd.cliFullName
+        info["products"] = []
+        for product in data:
+            productToAdd = Product.query.filter_by(proID = product.proID).first()
+            info["products"].append(product.toJSON())
+            info["products"][-1]["proName"] = productToAdd.proName
+        return info
     except Exception as e:
         return None
 
@@ -37,7 +67,7 @@ def createSale(data):
 
 def updateSale(saleId, data):
     try:
-        sales = Sales.query.filter_by(salID=saleId).first()
+        sales = Sales.query.filter_by(salID = saleId).first()
         
         if sales.proID != data.proID:
             sales.proID = data.proID

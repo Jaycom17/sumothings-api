@@ -1,8 +1,15 @@
 from flask import request, jsonify
 from middlewares.TypesMiddleware import typesMiddleware
 from services.TypesServices import createProductType, deleteProductType, getAllProductTypes, getProductTypeById, updateProductType
+from middlewares.AuthMiddleware import verifyAdmin
 
 def getTypes():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     types = getAllProductTypes()
     
     if types == None:
@@ -11,6 +18,12 @@ def getTypes():
     return types, 200
 
 def getType(typeID):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     type = getProductTypeById(typeID)
     
     if type == None:
@@ -19,6 +32,12 @@ def getType(typeID):
     return type, 200
 
 def postType():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     typeToCreate = typesMiddleware(request.get_json())
 
     if typeToCreate == None:
@@ -32,6 +51,12 @@ def postType():
     return jsonify(type), 200
 
 def putType(typeID):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     typeToUpdate = typesMiddleware(request.get_json())
     
     if typeToUpdate == None:
@@ -45,6 +70,12 @@ def putType(typeID):
     return jsonify(type), 200
 
 def dropType(typeID):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     type = deleteProductType(typeID)
     
     if type == None:
