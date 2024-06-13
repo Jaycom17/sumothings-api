@@ -2,11 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "API para la página web sumothings",
-<<<<<<< HEAD
-    "description": "Este es el api creado para la página web sumothings, utilizando el framework flask de python.",
-=======
-    "description": "Este es el API creado para la página web sumothings, utilizando el framework Flask de Python.\n",
->>>>>>> JoseBranch
+    "description": "Este es el API creado para la página web sumothings, utilizando el framework Flask de Python.",
     "version": "1.0.0"
   },
   "servers": [
@@ -16,7 +12,6 @@
   ],
   "tags": [
     {
-<<<<<<< HEAD
       "name": "articles",
       "description": "Artículos de la página web sumothings, se implementa un crud con httpRequest."
     },
@@ -31,32 +26,79 @@
     {
       "name": "shopping",
       "description": "Endpoints para las operaciones crud de las compras."
-    }
-  ],
-  "paths": {
-    "/shopping": {
-      "get": {
-        "tags": [
-          "shopping"
-        ],
-        "summary": "Obtiene todos los shoppings",
-=======
+    },
+    {
       "name": "types",
       "description": "Tipos de productos de la página web sumothings, se implementa un CRUD con httpRequest.\n"
     },
     {
       "name": "products",
       "description": "Productos de la página web sumothings, se implementa un CRUD con httpRequest.\n"
+    },
+    {
+      "name": "adminUser",
+      "description": "Endpoints para las operaciones crud de los administradores."
+    },
+    {
+      "name": "client",
+      "description": "Endpoints para las operaciones crud de los clientes."
+    },
+    {
+      "name": "sales",
+      "description": "Endpoints para las operaciones crud de las ventas."
+    },
+    {
+      "name": "email",
+      "description": "Endpoints para las operaciones crud del email."
     }
   ],
   "paths": {
-    "/types": {
+    "/send-email": {
+      "post": {
+        "tags": [
+          "email"
+        ],
+        "summary": "Envia un correo",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Email"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Correo Enviado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/sales": {
       "get": {
         "tags": [
-          "types"
+          "sales"
         ],
-        "summary": "Obtiene los tipos de productos de la base de datos",
->>>>>>> JoseBranch
+        "summary": "Obtiene todas las ventas",
         "parameters": [
           {
             "$ref": "#/components/parameters/token"
@@ -64,9 +106,621 @@
         ],
         "responses": {
           "200": {
-<<<<<<< HEAD
-            "description": "Lista de shoppings",
-=======
+            "description": "Lista de ventas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sale"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "sales"
+        ],
+        "summary": "Crea una nueva venta",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sale"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Venta creada"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/sales/{saleId}": {
+      "get": {
+        "tags": [
+          "sales"
+        ],
+        "summary": "Obtiene una venta por ID de la factura",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "saleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Venta encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sale"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "sales"
+        ],
+        "summary": "Actualiza una venta por ID de la factura",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "saleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sale"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Venta actualizada"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "sales"
+        ],
+        "summary": "Elimina una venta por ID de la factura",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "saleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Venta eliminada"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/adminUser": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Obtiene todos los admin",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminUser"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Crea un nuevo admin",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Admin creado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/adminUser/{admID}": {
+      "get": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Obtiene un admin por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "admID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Admin encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Actualiza un admin por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "admID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Admin actualizado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "adminUser"
+        ],
+        "summary": "Elimina un admin por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "admID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Admin eliminado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/client": {
+      "get": {
+        "tags": [
+          "client"
+        ],
+        "summary": "Obtiene todos los clientes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "client"
+        ],
+        "summary": "Crea un nuevo cliente",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Client"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cliente creado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/client/{cliID}": {
+      "get": {
+        "tags": [
+          "client"
+        ],
+        "summary": "Obtiene un cliente por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "cliID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "client"
+        ],
+        "summary": "Actualiza un cliente por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "cliID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Client"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cliente actualizado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "client"
+        ],
+        "summary": "Elimina un cliente por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "cliID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente eliminado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/types": {
+      "get": {
+        "tags": [
+          "types"
+        ],
+        "summary": "Obtiene los tipos de productos de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "Types obtained",
             "content": {
               "application/json": {
@@ -473,15 +1127,11 @@
         "responses": {
           "200": {
             "description": "Resumen de productos",
->>>>>>> JoseBranch
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-<<<<<<< HEAD
-                    "$ref": "#/components/schemas/Shopping"
-=======
                     "type": "object",
                     "properties": {
                       "proID": {
@@ -510,13 +1160,177 @@
                         "description": "ID del tipo de producto."
                       }
                     }
->>>>>>> JoseBranch
                   }
                 }
               }
             }
           },
-<<<<<<< HEAD
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/products/status": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Obtiene el estado de los productos",
+        "responses": {
+          "200": {
+            "description": "Estado de los productos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productsWithLowStock": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "proID": {
+                            "type": "string",
+                            "description": "ID del producto."
+                          },
+                          "proName": {
+                            "type": "string",
+                            "description": "Nombre del producto."
+                          },
+                          "proStock": {
+                            "type": "integer",
+                            "description": "Stock del producto."
+                          },
+                          "proPrice": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Precio del producto."
+                          }
+                        }
+                      }
+                    },
+                    "mostSalingProducts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "proImage": {
+                            "type": "string",
+                            "description": "Imagen del producto."
+                          },
+                          "proID": {
+                            "type": "string",
+                            "description": "ID del producto."
+                          },
+                          "proName": {
+                            "type": "string",
+                            "description": "Nombre del producto."
+                          },
+                          "proStock": {
+                            "type": "integer",
+                            "description": "Stock del producto."
+                          },
+                          "proPrice": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Precio del producto."
+                          },
+                          "proTotalSales": {
+                            "type": "integer",
+                            "description": "Ventas totales del producto."
+                          }
+                        }
+                      }
+                    },
+                    "inventorySummary": {
+                      "type": "object",
+                      "properties": {
+                        "productsNumber": {
+                          "type": "integer",
+                          "description": "Número de productos en inventario."
+                        },
+                        "totalSales": {
+                          "type": "integer",
+                          "description": "Número total de ventas."
+                        },
+                        "totalClients": {
+                          "type": "integer",
+                          "description": "Número total de clientes."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/dwimg/{imgName}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Descarga una imagen de producto",
+        "parameters": [
+          {
+            "name": "imgName",
+            "in": "path",
+            "description": "Nombre de la imagen a descargar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Imagen descargada",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/shopping": {
+      "get": {
+        "tags": [
+          "shopping"
+        ],
+        "summary": "Obtiene todos los shoppings",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de shoppings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Shopping"
+                  }
+                }
+              }
+            }
+          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -564,15 +1378,12 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
-=======
->>>>>>> JoseBranch
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
         }
       }
     },
-<<<<<<< HEAD
     "/shopping/{shoId}": {
       "get": {
         "tags": [
@@ -720,103 +1531,11 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Dealer"
-=======
-    "/products/status": {
-      "get": {
-        "tags": [
-          "products"
-        ],
-        "summary": "Obtiene el estado de los productos",
-        "responses": {
-          "200": {
-            "description": "Estado de los productos",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "productsWithLowStock": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "proID": {
-                            "type": "string",
-                            "description": "ID del producto."
-                          },
-                          "proName": {
-                            "type": "string",
-                            "description": "Nombre del producto."
-                          },
-                          "proStock": {
-                            "type": "integer",
-                            "description": "Stock del producto."
-                          },
-                          "proPrice": {
-                            "type": "number",
-                            "format": "float",
-                            "description": "Precio del producto."
-                          }
-                        }
-                      }
-                    },
-                    "mostSalingProducts": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "proImage": {
-                            "type": "string",
-                            "description": "Imagen del producto."
-                          },
-                          "proID": {
-                            "type": "string",
-                            "description": "ID del producto."
-                          },
-                          "proName": {
-                            "type": "string",
-                            "description": "Nombre del producto."
-                          },
-                          "proStock": {
-                            "type": "integer",
-                            "description": "Stock del producto."
-                          },
-                          "proPrice": {
-                            "type": "number",
-                            "format": "float",
-                            "description": "Precio del producto."
-                          },
-                          "proTotalSales": {
-                            "type": "integer",
-                            "description": "Ventas totales del producto."
-                          }
-                        }
-                      }
-                    },
-                    "inventorySummary": {
-                      "type": "object",
-                      "properties": {
-                        "productsNumber": {
-                          "type": "integer",
-                          "description": "Número de productos en inventario."
-                        },
-                        "totalSales": {
-                          "type": "integer",
-                          "description": "Número total de ventas."
-                        },
-                        "totalClients": {
-                          "type": "integer",
-                          "description": "Número total de clientes."
-                        }
-                      }
-                    }
->>>>>>> JoseBranch
                   }
                 }
               }
             }
           },
-<<<<<<< HEAD
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -864,15 +1583,12 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
-=======
->>>>>>> JoseBranch
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
         }
       }
     },
-<<<<<<< HEAD
     "/dealer/{dealerId}": {
       "get": {
         "tags": [
@@ -886,19 +1602,6 @@
           {
             "name": "dealerId",
             "in": "path",
-=======
-    "/dwimg/{imgName}": {
-      "get": {
-        "tags": [
-          "products"
-        ],
-        "summary": "Descarga una imagen de producto",
-        "parameters": [
-          {
-            "name": "imgName",
-            "in": "path",
-            "description": "Nombre de la imagen a descargar",
->>>>>>> JoseBranch
             "required": true,
             "schema": {
               "type": "string"
@@ -907,25 +1610,15 @@
         ],
         "responses": {
           "200": {
-<<<<<<< HEAD
             "description": "Dealer encontrado",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Dealer"
-=======
-            "description": "Imagen descargada",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
->>>>>>> JoseBranch
                 }
               }
             }
           },
-<<<<<<< HEAD
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -1394,10 +2087,6 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
-=======
-          "404": {
-            "$ref": "#/components/responses/NotFound"
->>>>>>> JoseBranch
           }
         }
       }
@@ -1409,17 +2098,10 @@
         "description": "(Unauthorized) No hay autorización para llamar al servicio"
       },
       "NotFound": {
-<<<<<<< HEAD
         "description": "(NotFound) No se encontrado información"
       },
       "BadRequest": {
         "description": "(Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados"
-=======
-        "description": "(NotFound) No se ha encontrado información"
-      },
-      "BadRequest": {
-        "description": "(Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados\n"
->>>>>>> JoseBranch
       },
       "ServerError": {
         "description": "Error en servidor"
@@ -1437,8 +2119,24 @@
       }
     },
     "schemas": {
-<<<<<<< HEAD
-      "Shopping": {
+      "Email": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email al que se va a contactar la empresa"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Asunto del correo"
+          },
+          "body": {
+            "type": "string",
+            "description": "Cuerpo del correo"
+          }
+        }
+      },
+      "Sale": {
         "type": "object",
         "properties": {
           "products": {
@@ -1450,20 +2148,20 @@
                   "type": "string",
                   "description": "ID del producto"
                 },
-                "deaID": {
+                "cliID": {
                   "type": "string",
                   "description": "ID del dealer"
                 },
-                "shoProductUnits": {
+                "salProductUnits": {
                   "type": "integer",
                   "description": "Unidades del producto en el shopping"
                 },
-                "shoPrice": {
+                "salPrice": {
                   "type": "number",
                   "format": "float",
                   "description": "Precio del shopping"
                 },
-                "shoTaxes": {
+                "salTaxes": {
                   "type": "number",
                   "format": "float",
                   "description": "Impuestos del shopping"
@@ -1471,40 +2169,19 @@
               }
             }
           },
-          "shoDate": {
+          "salDate": {
             "type": "string",
             "format": "date",
             "description": "Fecha del shopping"
           }
         }
       },
-      "Dealer": {
-        "type": "object",
-        "properties": {
-          "deaFullName": {
-            "type": "string",
-            "description": "nombre del proveedor"
-          },
-          "deaEmail": {
-            "type": "string",
-            "description": "email del proveedor"
-          },
-          "deaPhone": {
-            "type": "string",
-            "description": "telefono del proveedor"
-          },
-          "deaCedula": {
-            "type": "string",
-            "description": "cedula del proveedor"
-          }
-        }
-      },
-      "BodyloginAdminPost": {
+      "AdminUser": {
         "type": "object",
         "properties": {
           "admEmail": {
             "type": "string",
-            "description": "email del admin."
+            "description": "email del admin"
           },
           "admPassword": {
             "type": "string",
@@ -1512,118 +2189,51 @@
           }
         }
       },
-      "BodyloginPost": {
+      "Client": {
         "type": "object",
         "properties": {
+          "cliFullName": {
+            "type": "string",
+            "description": "nombre del cliente"
+          },
           "cliEmail": {
             "type": "string",
-            "description": "email del cliente."
+            "description": "correo del cliente."
           },
           "cliPassword": {
             "type": "string",
             "description": "contraseña del cliente."
+          },
+          "cliPhone": {
+            "type": "string",
+            "description": "teléfono del cliente."
+          },
+          "cliAddress": {
+            "type": "string",
+            "description": "direción del cliente."
+          },
+          "cliNIT": {
+            "type": "string",
+            "description": "nit del cliente."
+          },
+          "cliCompanyName": {
+            "type": "string",
+            "description": "nombre de la compañia del cliente."
+          },
+          "cliCity": {
+            "type": "string",
+            "description": "ciudad del cliente."
+          },
+          "cliPostalCode": {
+            "type": "string",
+            "description": "código postal del cliente."
+          },
+          "cliCedula": {
+            "type": "string",
+            "description": "cédula del cliente."
           }
         }
       },
-      "BodyArticlesPut": {
-        "type": "object",
-        "properties": {
-          "artID": {
-            "type": "string",
-            "description": "id del artículo."
-          },
-          "artTitle": {
-            "type": "string",
-            "description": "Título del artículo."
-          },
-          "artShortDescription": {
-            "type": "string",
-            "description": "Descripción corta del artículo."
-          },
-          "artContent": {
-            "type": "string",
-            "description": "Contenido del artículo."
-          },
-          "artAuthor": {
-            "type": "string",
-            "description": "Autor del artículo."
-          },
-          "artDate": {
-            "type": "string",
-            "description": "Fecha del artículo."
-          }
-        }
-      },
-      "BodyArticlesPost": {
-        "type": "object",
-        "properties": {
-          "artTitle": {
-            "type": "string",
-            "description": "Título del artículo."
-          },
-          "artShortDescription": {
-            "type": "string",
-            "description": "Descripción corta del artículo."
-          },
-          "artContent": {
-            "type": "string",
-            "description": "Contenido del artículo."
-          },
-          "artAuthor": {
-            "type": "string",
-            "description": "Autor del artículo."
-          },
-          "artDate": {
-            "type": "string",
-            "description": "Fecha del artículo."
-          }
-        }
-      },
-      "BodyArticleGet": {
-        "type": "object",
-        "properties": {
-          "artID": {
-            "type": "string",
-            "enum": [
-              "18246ef780d54f388dacc8cdffcb6549"
-            ],
-            "description": "id del artículo."
-          },
-          "artTitle": {
-            "type": "string",
-            "enum": [
-              "La vaca lola"
-            ],
-            "description": "Título del artículo."
-          },
-          "artShortDescription": {
-            "type": "string",
-            "enum": [
-              "articulo grande"
-            ],
-            "description": "Descripción corta del artículo."
-          },
-          "artContent": {
-            "type": "string",
-            "enum": [
-              "Hot sticky scenes, you know what I mean\nLike a desert sun that burns my skin\nI've been waiting for her, for so long\nOpen the sky and let her come now\nHere comes the rain\nAnd here comes the rain\nHere she comes again\nHere comes the rain\nHot sticky scene, she know what I mean\nLike a desert sun that burns my skin (skin, skin)\nI've been waiting for her, oh, so long\nOpen the sky and let her come now\nHere comes the rain\nAnd here comes the rain\nHere she comes again\nHere comes the rain\nI love the rain\nAnd I love the rain\nHere she comes again\nAnd here comes the rain\nOh, ra-a-ain\nThe ra-a-ain\nRa-a-ain\nOh, here comes the rain!\nI love the rain\nWell, I love the rain\nHere she comes again\nI love the rain\nThe ra-a-ain\nThe ra-a-ain"
-            ],
-            "description": "Contenido del artículo."
-          },
-          "artAuthor": {
-            "type": "string",
-            "enum": [
-              "Fulano"
-            ],
-            "description": "Autor del artículo."
-          },
-          "artDate": {
-            "type": "string",
-            "enum": [
-              "Wed, 01 May 2024 00:00:00 GMT"
-            ],
-            "description": "Fecha del artículo."
-=======
       "BodyTypesPost": {
         "type": "object",
         "properties": {
@@ -1841,7 +2451,194 @@
           "proImage": {
             "type": "string",
             "description": "URL de la imagen del producto."
->>>>>>> JoseBranch
+          }
+        }
+      },
+      "Shopping": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "proID": {
+                  "type": "string",
+                  "description": "ID del producto"
+                },
+                "deaID": {
+                  "type": "string",
+                  "description": "ID del dealer"
+                },
+                "shoProductUnits": {
+                  "type": "integer",
+                  "description": "Unidades del producto en el shopping"
+                },
+                "shoPrice": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Precio del shopping"
+                },
+                "shoTaxes": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Impuestos del shopping"
+                }
+              }
+            }
+          },
+          "shoDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha del shopping"
+          }
+        }
+      },
+      "Dealer": {
+        "type": "object",
+        "properties": {
+          "deaFullName": {
+            "type": "string",
+            "description": "nombre del proveedor"
+          },
+          "deaEmail": {
+            "type": "string",
+            "description": "email del proveedor"
+          },
+          "deaPhone": {
+            "type": "string",
+            "description": "telefono del proveedor"
+          },
+          "deaCedula": {
+            "type": "string",
+            "description": "cedula del proveedor"
+          }
+        }
+      },
+      "BodyloginAdminPost": {
+        "type": "object",
+        "properties": {
+          "admEmail": {
+            "type": "string",
+            "description": "email del admin."
+          },
+          "admPassword": {
+            "type": "string",
+            "description": "contraseña del admin."
+          }
+        }
+      },
+      "BodyloginPost": {
+        "type": "object",
+        "properties": {
+          "cliEmail": {
+            "type": "string",
+            "description": "email del cliente."
+          },
+          "cliPassword": {
+            "type": "string",
+            "description": "contraseña del cliente."
+          }
+        }
+      },
+      "BodyArticlesPut": {
+        "type": "object",
+        "properties": {
+          "artID": {
+            "type": "string",
+            "description": "id del artículo."
+          },
+          "artTitle": {
+            "type": "string",
+            "description": "Título del artículo."
+          },
+          "artShortDescription": {
+            "type": "string",
+            "description": "Descripción corta del artículo."
+          },
+          "artContent": {
+            "type": "string",
+            "description": "Contenido del artículo."
+          },
+          "artAuthor": {
+            "type": "string",
+            "description": "Autor del artículo."
+          },
+          "artDate": {
+            "type": "string",
+            "description": "Fecha del artículo."
+          }
+        }
+      },
+      "BodyArticlesPost": {
+        "type": "object",
+        "properties": {
+          "artTitle": {
+            "type": "string",
+            "description": "Título del artículo."
+          },
+          "artShortDescription": {
+            "type": "string",
+            "description": "Descripción corta del artículo."
+          },
+          "artContent": {
+            "type": "string",
+            "description": "Contenido del artículo."
+          },
+          "artAuthor": {
+            "type": "string",
+            "description": "Autor del artículo."
+          },
+          "artDate": {
+            "type": "string",
+            "description": "Fecha del artículo."
+          }
+        }
+      },
+      "BodyArticleGet": {
+        "type": "object",
+        "properties": {
+          "artID": {
+            "type": "string",
+            "enum": [
+              "18246ef780d54f388dacc8cdffcb6549"
+            ],
+            "description": "id del artículo."
+          },
+          "artTitle": {
+            "type": "string",
+            "enum": [
+              "La vaca lola"
+            ],
+            "description": "Título del artículo."
+          },
+          "artShortDescription": {
+            "type": "string",
+            "enum": [
+              "articulo grande"
+            ],
+            "description": "Descripción corta del artículo."
+          },
+          "artContent": {
+            "type": "string",
+            "enum": [
+              "Hot sticky scenes, you know what I mean\nLike a desert sun that burns my skin\nI've been waiting for her, for so long\nOpen the sky and let her come now\nHere comes the rain\nAnd here comes the rain\nHere she comes again\nHere comes the rain\nHot sticky scene, she know what I mean\nLike a desert sun that burns my skin (skin, skin)\nI've been waiting for her, oh, so long\nOpen the sky and let her come now\nHere comes the rain\nAnd here comes the rain\nHere she comes again\nHere comes the rain\nI love the rain\nAnd I love the rain\nHere she comes again\nAnd here comes the rain\nOh, ra-a-ain\nThe ra-a-ain\nRa-a-ain\nOh, here comes the rain!\nI love the rain\nWell, I love the rain\nHere she comes again\nI love the rain\nThe ra-a-ain\nThe ra-a-ain"
+            ],
+            "description": "Contenido del artículo."
+          },
+          "artAuthor": {
+            "type": "string",
+            "enum": [
+              "Fulano"
+            ],
+            "description": "Autor del artículo."
+          },
+          "artDate": {
+            "type": "string",
+            "enum": [
+              "Wed, 01 May 2024 00:00:00 GMT"
+            ],
+            "description": "Fecha del artículo."
           }
         }
       }
