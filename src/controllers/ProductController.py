@@ -29,6 +29,7 @@ def getProducts():
     
     return products, 200
 
+<<<<<<< HEAD
 def getProductsBrief():
     products = getAllProducts()
     
@@ -49,6 +50,8 @@ def getProductsBrief():
     
     return jsonify(briefProducts), 200
 
+=======
+>>>>>>> JoseBranch
 def getProduct(productId):
     
     verify = verifyAdmin(request)
@@ -62,6 +65,7 @@ def getProduct(productId):
         return jsonify({"error": "An error occurred while getting all products"}), 500
     
     return product, 200
+<<<<<<< HEAD
 
 def postProduct():
     
@@ -70,6 +74,11 @@ def postProduct():
     if hasattr(verify, "admID") == False:
         return jsonify({"error": "Unauthorized"}), 401
 
+=======
+
+def postProduct():
+
+>>>>>>> JoseBranch
     productToCreate = productMiddleWare(request.form.to_dict())
 
     if productToCreate == None:

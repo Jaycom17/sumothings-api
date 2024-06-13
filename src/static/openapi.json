@@ -2,7 +2,11 @@
   "openapi": "3.0.3",
   "info": {
     "title": "API para la página web sumothings",
+<<<<<<< HEAD
     "description": "Este es el api creado para la página web sumothings, utilizando el framework flask de python.",
+=======
+    "description": "Este es el API creado para la página web sumothings, utilizando el framework Flask de Python.\n",
+>>>>>>> JoseBranch
     "version": "1.0.0"
   },
   "servers": [
@@ -12,6 +16,7 @@
   ],
   "tags": [
     {
+<<<<<<< HEAD
       "name": "articles",
       "description": "Artículos de la página web sumothings, se implementa un crud con httpRequest."
     },
@@ -35,6 +40,23 @@
           "shopping"
         ],
         "summary": "Obtiene todos los shoppings",
+=======
+      "name": "types",
+      "description": "Tipos de productos de la página web sumothings, se implementa un CRUD con httpRequest.\n"
+    },
+    {
+      "name": "products",
+      "description": "Productos de la página web sumothings, se implementa un CRUD con httpRequest.\n"
+    }
+  ],
+  "paths": {
+    "/types": {
+      "get": {
+        "tags": [
+          "types"
+        ],
+        "summary": "Obtiene los tipos de productos de la base de datos",
+>>>>>>> JoseBranch
         "parameters": [
           {
             "$ref": "#/components/parameters/token"
@@ -42,18 +64,459 @@
         ],
         "responses": {
           "200": {
+<<<<<<< HEAD
             "description": "Lista de shoppings",
+=======
+            "description": "Types obtained",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BodyTypeGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "types"
+        ],
+        "summary": "Inserta un nuevo tipo de producto en la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyTypesPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Type created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/types/{typeID}": {
+      "get": {
+        "tags": [
+          "types"
+        ],
+        "summary": "Obtiene un tipo de producto de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "typeID",
+            "in": "path",
+            "description": "Identificador del tipo de producto a obtener",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Type obtained",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BodyTypeGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "types"
+        ],
+        "summary": "Actualiza un tipo de producto en la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "typeID",
+            "in": "path",
+            "description": "Identificador del tipo de producto a modificar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyTypesPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Type updated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "types"
+        ],
+        "summary": "Borra un tipo de producto de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "typeID",
+            "in": "path",
+            "description": "Identificador del tipo de producto a borrar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Type deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Inserta un nuevo producto en la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyProductsPost"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Producto creado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Obtiene los productos de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Productos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BodyProductGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/products/{productID}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Obtiene un producto de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "productID",
+            "in": "path",
+            "description": "Identificador del producto a obtener",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto obtenido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BodyProductGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Actualiza un producto de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "productID",
+            "in": "path",
+            "description": "Identificador del producto a modificar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyProductsPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Producto actualizado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Borra un producto de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "productID",
+            "in": "path",
+            "description": "Identificador del producto a borrar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto borrado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/products/brief": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Obtiene un resumen de los productos",
+        "responses": {
+          "200": {
+            "description": "Resumen de productos",
+>>>>>>> JoseBranch
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
+<<<<<<< HEAD
                     "$ref": "#/components/schemas/Shopping"
+=======
+                    "type": "object",
+                    "properties": {
+                      "proID": {
+                        "type": "string",
+                        "description": "ID del producto."
+                      },
+                      "proName": {
+                        "type": "string",
+                        "description": "Nombre del producto."
+                      },
+                      "proSellPrice": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Precio de venta del producto."
+                      },
+                      "proDescription": {
+                        "type": "string",
+                        "description": "Descripción del producto."
+                      },
+                      "proImage": {
+                        "type": "string",
+                        "description": "Imagen del producto."
+                      },
+                      "proTypeID": {
+                        "type": "integer",
+                        "description": "ID del tipo de producto."
+                      }
+                    }
+>>>>>>> JoseBranch
                   }
                 }
               }
             }
           },
+<<<<<<< HEAD
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -101,12 +564,15 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
+=======
+>>>>>>> JoseBranch
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
         }
       }
     },
+<<<<<<< HEAD
     "/shopping/{shoId}": {
       "get": {
         "tags": [
@@ -254,11 +720,103 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Dealer"
+=======
+    "/products/status": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Obtiene el estado de los productos",
+        "responses": {
+          "200": {
+            "description": "Estado de los productos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productsWithLowStock": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "proID": {
+                            "type": "string",
+                            "description": "ID del producto."
+                          },
+                          "proName": {
+                            "type": "string",
+                            "description": "Nombre del producto."
+                          },
+                          "proStock": {
+                            "type": "integer",
+                            "description": "Stock del producto."
+                          },
+                          "proPrice": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Precio del producto."
+                          }
+                        }
+                      }
+                    },
+                    "mostSalingProducts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "proImage": {
+                            "type": "string",
+                            "description": "Imagen del producto."
+                          },
+                          "proID": {
+                            "type": "string",
+                            "description": "ID del producto."
+                          },
+                          "proName": {
+                            "type": "string",
+                            "description": "Nombre del producto."
+                          },
+                          "proStock": {
+                            "type": "integer",
+                            "description": "Stock del producto."
+                          },
+                          "proPrice": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Precio del producto."
+                          },
+                          "proTotalSales": {
+                            "type": "integer",
+                            "description": "Ventas totales del producto."
+                          }
+                        }
+                      }
+                    },
+                    "inventorySummary": {
+                      "type": "object",
+                      "properties": {
+                        "productsNumber": {
+                          "type": "integer",
+                          "description": "Número de productos en inventario."
+                        },
+                        "totalSales": {
+                          "type": "integer",
+                          "description": "Número total de ventas."
+                        },
+                        "totalClients": {
+                          "type": "integer",
+                          "description": "Número total de clientes."
+                        }
+                      }
+                    }
+>>>>>>> JoseBranch
                   }
                 }
               }
             }
           },
+<<<<<<< HEAD
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -306,12 +864,15 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
+=======
+>>>>>>> JoseBranch
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
         }
       }
     },
+<<<<<<< HEAD
     "/dealer/{dealerId}": {
       "get": {
         "tags": [
@@ -325,6 +886,19 @@
           {
             "name": "dealerId",
             "in": "path",
+=======
+    "/dwimg/{imgName}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Descarga una imagen de producto",
+        "parameters": [
+          {
+            "name": "imgName",
+            "in": "path",
+            "description": "Nombre de la imagen a descargar",
+>>>>>>> JoseBranch
             "required": true,
             "schema": {
               "type": "string"
@@ -333,15 +907,25 @@
         ],
         "responses": {
           "200": {
+<<<<<<< HEAD
             "description": "Dealer encontrado",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Dealer"
+=======
+            "description": "Imagen descargada",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+>>>>>>> JoseBranch
                 }
               }
             }
           },
+<<<<<<< HEAD
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -810,6 +1394,10 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
+=======
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+>>>>>>> JoseBranch
           }
         }
       }
@@ -821,10 +1409,17 @@
         "description": "(Unauthorized) No hay autorización para llamar al servicio"
       },
       "NotFound": {
+<<<<<<< HEAD
         "description": "(NotFound) No se encontrado información"
       },
       "BadRequest": {
         "description": "(Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados"
+=======
+        "description": "(NotFound) No se ha encontrado información"
+      },
+      "BadRequest": {
+        "description": "(Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados\n"
+>>>>>>> JoseBranch
       },
       "ServerError": {
         "description": "Error en servidor"
@@ -842,6 +1437,7 @@
       }
     },
     "schemas": {
+<<<<<<< HEAD
       "Shopping": {
         "type": "object",
         "properties": {
@@ -1027,6 +1623,225 @@
               "Wed, 01 May 2024 00:00:00 GMT"
             ],
             "description": "Fecha del artículo."
+=======
+      "BodyTypesPost": {
+        "type": "object",
+        "properties": {
+          "typeName": {
+            "type": "string",
+            "description": "Nombre del tipo de producto."
+          }
+        }
+      },
+      "BodyTypesPut": {
+        "type": "object",
+        "properties": {
+          "typeID": {
+            "type": "string",
+            "description": "ID del tipo de producto."
+          },
+          "typeName": {
+            "type": "string",
+            "description": "Nombre del tipo de producto."
+          }
+        }
+      },
+      "BodyTypeGet": {
+        "type": "object",
+        "properties": {
+          "typeID": {
+            "type": "string",
+            "description": "ID del tipo de producto."
+          },
+          "typeName": {
+            "type": "string",
+            "description": "Nombre del tipo de producto."
+          }
+        }
+      },
+      "BodyProductsPut": {
+        "type": "object",
+        "properties": {
+          "proName": {
+            "type": "string",
+            "description": "Nombre del producto."
+          },
+          "proStock": {
+            "type": "integer",
+            "description": "Cantidad de stock del producto."
+          },
+          "proHeight": {
+            "type": "number",
+            "format": "float",
+            "description": "Altura del producto."
+          },
+          "proLength": {
+            "type": "number",
+            "format": "float",
+            "description": "Longitud del producto."
+          },
+          "proWidth": {
+            "type": "number",
+            "format": "float",
+            "description": "Anchura del producto."
+          },
+          "proWeight": {
+            "type": "number",
+            "format": "float",
+            "description": "Peso del producto."
+          },
+          "proBuyPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de compra del producto."
+          },
+          "proSellPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de venta del producto."
+          },
+          "proMinStock": {
+            "type": "integer",
+            "description": "Stock mínimo del producto."
+          },
+          "proMaxStock": {
+            "type": "integer",
+            "description": "Stock máximo del producto."
+          },
+          "proDescription": {
+            "type": "string",
+            "description": "Descripción del producto."
+          },
+          "proTypeID": {
+            "type": "integer",
+            "description": "ID del tipo de producto."
+          }
+        }
+      },
+      "BodyProductsPost": {
+        "type": "object",
+        "properties": {
+          "proName": {
+            "type": "string",
+            "description": "Nombre del producto."
+          },
+          "proStock": {
+            "type": "integer",
+            "description": "Cantidad de stock del producto."
+          },
+          "proHeight": {
+            "type": "number",
+            "format": "float",
+            "description": "Altura del producto."
+          },
+          "proLength": {
+            "type": "number",
+            "format": "float",
+            "description": "Longitud del producto."
+          },
+          "proWidth": {
+            "type": "number",
+            "format": "float",
+            "description": "Anchura del producto."
+          },
+          "proWeight": {
+            "type": "number",
+            "format": "float",
+            "description": "Peso del producto."
+          },
+          "proBuyPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de compra del producto."
+          },
+          "proSellPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de venta del producto."
+          },
+          "proMinStock": {
+            "type": "integer",
+            "description": "Stock mínimo del producto."
+          },
+          "proMaxStock": {
+            "type": "integer",
+            "description": "Stock máximo del producto."
+          },
+          "proDescription": {
+            "type": "string",
+            "description": "Descripción del producto."
+          },
+          "proTypeID": {
+            "type": "integer",
+            "description": "ID del tipo de producto."
+          }
+        }
+      },
+      "BodyProductGet": {
+        "type": "object",
+        "properties": {
+          "proID": {
+            "type": "string",
+            "description": "ID del producto."
+          },
+          "proName": {
+            "type": "string",
+            "description": "Nombre del producto."
+          },
+          "proStock": {
+            "type": "integer",
+            "description": "Cantidad de stock del producto."
+          },
+          "proHeight": {
+            "type": "number",
+            "format": "float",
+            "description": "Altura del producto."
+          },
+          "proLength": {
+            "type": "number",
+            "format": "float",
+            "description": "Longitud del producto."
+          },
+          "proWidth": {
+            "type": "number",
+            "format": "float",
+            "description": "Anchura del producto."
+          },
+          "proWeight": {
+            "type": "number",
+            "format": "float",
+            "description": "Peso del producto."
+          },
+          "proBuyPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de compra del producto."
+          },
+          "proSellPrice": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de venta del producto."
+          },
+          "proMinStock": {
+            "type": "integer",
+            "description": "Stock mínimo del producto."
+          },
+          "proMaxStock": {
+            "type": "integer",
+            "description": "Stock máximo del producto."
+          },
+          "proDescription": {
+            "type": "string",
+            "description": "Descripción del producto."
+          },
+          "proTypeID": {
+            "type": "integer",
+            "description": "ID del tipo de producto."
+          },
+          "proImage": {
+            "type": "string",
+            "description": "URL de la imagen del producto."
+>>>>>>> JoseBranch
           }
         }
       }
