@@ -1,5 +1,7 @@
 from database.database import db
 import uuid
+from models.ProductModel import Product
+from models.DealerModel import Dealer
 
 class ShoppingModel:
     def __init__(self, proID: str, deaID: str, shoReceipt: str, shoDate: str, shoProductUnits: int, shoPrice: float, shoTaxes: float):
@@ -11,7 +13,19 @@ class ShoppingModel:
         self.shoPrice = shoPrice
         self.shoTaxes = shoTaxes
 
+class ShoppingModelToUpdate:
+    def __init__(self,shoID: str , proID: str, deaID: str, shoReceipt: str, shoDate: str, shoProductUnits: int, shoPrice: float, shoTaxes: float):
+        self.shoID = shoID
+        self.proID = proID
+        self.deaID = deaID
+        self.shoReceipt = shoReceipt
+        self.shoDate = shoDate
+        self.shoProductUnits = shoProductUnits
+        self.shoPrice = shoPrice
+        self.shoTaxes = shoTaxes
+
 class Shopping(db.Model):
+    __tablename__ = 'shopping'
     shoID = db.Column(db.String(255), primary_key=True)
     proID = db.Column(db.String(255), db.ForeignKey('product.proID'), nullable=False)
     deaID = db.Column(db.String(255), db.ForeignKey('dealer.deaID'), nullable=False)

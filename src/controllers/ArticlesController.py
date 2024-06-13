@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from services.ArticlesServices import getAllArticles ,getArticleById, createArticle, updateArticle, deleteArticle
 from middlewares.ArticleMiddleware import articleMiddleWare
+from middlewares.AuthMiddleware import verifyAdmin
 
 def getArticles():
 
@@ -19,6 +20,11 @@ def getArticle(articleID):
     
     return article, 200
 def postArticle():
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
 
     articleToCreate = articleMiddleWare(request.get_json())
 
@@ -33,6 +39,11 @@ def postArticle():
     return jsonify(article), 200
 def putArticle(articleID):
     
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
+    
     articleToUpdate = articleMiddleWare(request.get_json())
     
     if articleToUpdate == None:
@@ -45,10 +56,15 @@ def putArticle(articleID):
     
     return jsonify(article), 200
 def dropArticle(articleID):
+    
+    verify = verifyAdmin(request)
+    
+    if hasattr(verify, "admID") == False:
+        return jsonify({"error": "Unauthorized"}), 401
         
-        article = deleteArticle(articleID)
-        
-        if article == None:
-            return jsonify({"error": "An error occurred while deleting a article"}), 500
-        
-        return jsonify(article), 200
+    article = deleteArticle(articleID)
+    
+    if article == None:
+        return jsonify({"error": "An error occurred while deleting a article"}), 500
+    
+    return jsonify(article), 200
