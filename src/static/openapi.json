@@ -1,0 +1,1035 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API para la página web sumothings",
+    "description": "Este es el api creado para la página web sumothings, utilizando el framework flask de python.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "articles",
+      "description": "Artículos de la página web sumothings, se implementa un crud con httpRequest."
+    },
+    {
+      "name": "auth",
+      "description": "Autentificación de la página web sumothings, se implementa un validación con httpRequest."
+    },
+    {
+      "name": "dealer",
+      "description": "Endpoints para las operaciones crud de los proveedores."
+    },
+    {
+      "name": "shopping",
+      "description": "Endpoints para las operaciones crud de las compras."
+    }
+  ],
+  "paths": {
+    "/shopping": {
+      "get": {
+        "tags": [
+          "shopping"
+        ],
+        "summary": "Obtiene todos los shoppings",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de shoppings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Shopping"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "shopping"
+        ],
+        "summary": "Crea un nuevo shopping",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Shopping"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Shopping creado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/shopping/{shoId}": {
+      "get": {
+        "tags": [
+          "shopping"
+        ],
+        "summary": "Obtiene un shopping por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "shoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shopping encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shopping"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "shopping"
+        ],
+        "summary": "Actualiza un shopping por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "shoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Shopping"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Shopping actualizado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "shopping"
+        ],
+        "summary": "Elimina un shopping por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "shoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shopping eliminado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/dealer": {
+      "get": {
+        "tags": [
+          "dealer"
+        ],
+        "summary": "Obtiene todos los dealers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de dealers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Dealer"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "dealer"
+        ],
+        "summary": "Crea un nuevo dealer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Dealer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Dealer creado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/dealer/{dealerId}": {
+      "get": {
+        "tags": [
+          "dealer"
+        ],
+        "summary": "Obtiene un dealer por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "dealerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dealer encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dealer"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "dealer"
+        ],
+        "summary": "Actualiza un dealer por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "dealerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Dealer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Dealer actualizado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "dealer"
+        ],
+        "summary": "Elimina un dealer por ID",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "dealerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dealer eliminado"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/articles": {
+      "post": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Inserta un nuevo artículo en la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyArticlesPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Article created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Obtiene los  artículos de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BodyArticleGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/articles/{articleID}": {
+      "get": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Obtiene un artículo de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "articleID",
+            "in": "path",
+            "description": "Identificador del artículo a obtener",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article obtained",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BodyArticleGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Actualiza un artículo de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "articleID",
+            "in": "path",
+            "description": "Identificador del artículo a modificar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyArticlesPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Article updated"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Borra un artículo de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          },
+          {
+            "name": "articleID",
+            "in": "path",
+            "description": "Identificador del artículo a borrar",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Genera un token en el cliente",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyloginPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "access_token"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/login-admin": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Genera un token en el admin",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyloginAdminPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "access_token"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Obtiene un artículo de la base de datos",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "access_token"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/validate-admin": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Genera un token en el admin",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "access_token"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/validate-client": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Genera un token en el admin",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "access_token"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Unauthorized": {
+        "description": "(Unauthorized) No hay autorización para llamar al servicio"
+      },
+      "NotFound": {
+        "description": "(NotFound) No se encontrado información"
+      },
+      "BadRequest": {
+        "description": "(Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados"
+      },
+      "ServerError": {
+        "description": "Error en servidor"
+      }
+    },
+    "parameters": {
+      "token": {
+        "in": "header",
+        "name": "token",
+        "description": "Token de autenticación en API.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "Shopping": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "proID": {
+                  "type": "string",
+                  "description": "ID del producto"
+                },
+                "deaID": {
+                  "type": "string",
+                  "description": "ID del dealer"
+                },
+                "shoProductUnits": {
+                  "type": "integer",
+                  "description": "Unidades del producto en el shopping"
+                },
+                "shoPrice": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Precio del shopping"
+                },
+                "shoTaxes": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Impuestos del shopping"
+                }
+              }
+            }
+          },
+          "shoDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha del shopping"
+          }
+        }
+      },
+      "Dealer": {
+        "type": "object",
+        "properties": {
+          "deaFullName": {
+            "type": "string",
+            "description": "nombre del proveedor"
+          },
+          "deaEmail": {
+            "type": "string",
+            "description": "email del proveedor"
+          },
+          "deaPhone": {
+            "type": "string",
+            "description": "telefono del proveedor"
+          },
+          "deaCedula": {
+            "type": "string",
+            "description": "cedula del proveedor"
+          }
+        }
+      },
+      "BodyloginAdminPost": {
+        "type": "object",
+        "properties": {
+          "admEmail": {
+            "type": "string",
+            "description": "email del admin."
+          },
+          "admPassword": {
+            "type": "string",
+            "description": "contraseña del admin."
+          }
+        }
+      },
+      "BodyloginPost": {
+        "type": "object",
+        "properties": {
+          "cliEmail": {
+            "type": "string",
+            "description": "email del cliente."
+          },
+          "cliPassword": {
+            "type": "string",
+            "description": "contraseña del cliente."
+          }
+        }
+      },
+      "BodyArticlesPut": {
+        "type": "object",
+        "properties": {
+          "artID": {
+            "type": "string",
+            "description": "id del artículo."
+          },
+          "artTitle": {
+            "type": "string",
+            "description": "Título del artículo."
+          },
+          "artShortDescription": {
+            "type": "string",
+            "description": "Descripción corta del artículo."
+          },
+          "artContent": {
+            "type": "string",
+            "description": "Contenido del artículo."
+          },
+          "artAuthor": {
+            "type": "string",
+            "description": "Autor del artículo."
+          },
+          "artDate": {
+            "type": "string",
+            "description": "Fecha del artículo."
+          }
+        }
+      },
+      "BodyArticlesPost": {
+        "type": "object",
+        "properties": {
+          "artTitle": {
+            "type": "string",
+            "description": "Título del artículo."
+          },
+          "artShortDescription": {
+            "type": "string",
+            "description": "Descripción corta del artículo."
+          },
+          "artContent": {
+            "type": "string",
+            "description": "Contenido del artículo."
+          },
+          "artAuthor": {
+            "type": "string",
+            "description": "Autor del artículo."
+          },
+          "artDate": {
+            "type": "string",
+            "description": "Fecha del artículo."
+          }
+        }
+      },
+      "BodyArticleGet": {
+        "type": "object",
+        "properties": {
+          "artID": {
+            "type": "string",
+            "enum": [
+              "18246ef780d54f388dacc8cdffcb6549"
+            ],
+            "description": "id del artículo."
+          },
+          "artTitle": {
+            "type": "string",
+            "enum": [
+              "La vaca lola"
+            ],
+            "description": "Título del artículo."
+          },
+          "artShortDescription": {
+            "type": "string",
+            "enum": [
+              "articulo grande"
+            ],
+            "description": "Descripción corta del artículo."
+          },
+          "artContent": {
+            "type": "string",
+            "enum": [
+              "Hot sticky scenes, you know what I mean\nLike a desert sun that burns my skin\nI've been waiting for her, for so long\nOpen the sky and let her come now\nHere comes the rain\nAnd here comes the rain\nHere she comes again\nHere comes the rain\nHot sticky scene, she know what I mean\nLike a desert sun that burns my skin (skin, skin)\nI've been waiting for her, oh, so long\nOpen the sky and let her come now\nHere comes the rain\nAnd here comes the rain\nHere she comes again\nHere comes the rain\nI love the rain\nAnd I love the rain\nHere she comes again\nAnd here comes the rain\nOh, ra-a-ain\nThe ra-a-ain\nRa-a-ain\nOh, here comes the rain!\nI love the rain\nWell, I love the rain\nHere she comes again\nI love the rain\nThe ra-a-ain\nThe ra-a-ain"
+            ],
+            "description": "Contenido del artículo."
+          },
+          "artAuthor": {
+            "type": "string",
+            "enum": [
+              "Fulano"
+            ],
+            "description": "Autor del artículo."
+          },
+          "artDate": {
+            "type": "string",
+            "enum": [
+              "Wed, 01 May 2024 00:00:00 GMT"
+            ],
+            "description": "Fecha del artículo."
+          }
+        }
+      }
+    }
+  }
+}
